@@ -12,7 +12,7 @@
 - 🔒 **Offline Support** — Your data stays on your device thanks to local storage with Hive DB
 
 ## 📱 Screenshots
-*Coming soon*
+![Flowy ScreenShots](https://github.com/fyiimysf/flowy/blob/main/flowy_screenshot.png)
 
 ## 🛠️ Tech Stack
 
@@ -29,7 +29,7 @@
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/your-username/flowy.git
+   git clone https://github.com/fyiimysf/flowy.git
    cd flowy
    ```
 
