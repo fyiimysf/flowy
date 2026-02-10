@@ -1,18 +1,18 @@
 
-# Flowy 🌸
+# Floii 🌸
 
-**Flowy** is an easy-to-grasp menstrual cycle tracking app that helps users monitor their menstrual cycle and fertility. It provides insights into ovulation, period prediction, and personalized recommendations for lifestyle adjustments.
+**Floii** is an easy-to-grasp menstrual cycle tracking app that helps users monitor their menstrual cycle and fertility. It provides insights into ovulation, period prediction, and personalized recommendations for lifestyle adjustments.
 
 ## ✨ Features
 
 - 🌕 **Cycle & Period Tracking** — Log and view menstrual cycles easily
 - 🔮 **Ovulation & Fertility Insights** — Get predictions and insights into your fertile window
-- 📅 **Smart Predictions** — Flowy gets smarter over time, helping predict future periods
+- 📅 **Smart Predictions** — Floii gets smarter over time, helping predict future periods
 - 🌿 **Lifestyle Recommendations** — Personalized tips to align with your cycle
 - 🔒 **Offline Support** — Your data stays on your device thanks to local storage with Hive DB
 
 ## 📱 Screenshots
-![Flowy ScreenShots](https://github.com/fyiimysf/flowy/blob/main/flowy_screenshot.png)
+![Floii ScreenShots](https://github.com/fyiimysf/Floii/blob/main/Floii_screenshot.png)
 
 ## 🛠️ Tech Stack
 
@@ -29,8 +29,8 @@
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/fyiimysf/flowy.git
-   cd flowy
+   git clone https://github.com/fyiimysf/Floii.git
+   cd Floii
    ```
 
 2. **Install dependencies**
