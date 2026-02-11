@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-/// Girl-friendly color palette for Flowy
+/// Girl-friendly color palette for Floii
 /// Soft pinks, warm tones, and feminine accents with claymorphism aesthetics
 class AppColors {
   // Primary Colors - Soft Pink Family (Claymorphism Style)

@@ -2,7 +2,7 @@
 
 class AppStrings {
   // App Info
-  static const String appName = 'Flowy';
+  static const String appName = 'Floii';
   static const String appTagline = 'Track your cycle with ease';
   
   // Navigation
@@ -58,4 +58,37 @@ class AppStrings {
   // Errors
   static const String errorGeneric = 'Something went wrong';
   static const String errorNoData = 'No data available';
+  
+  // Localization Keys for reference
+  static const String welcomeTitle = 'Welcome to Floii!';
+  static const String welcomeSubtitle = 'Start tracking your period to see personalized insights and predictions.';
+  static const String welcomeHint = 'Tap on any date in the calendar to start tracking your period.';
+  static const String expectedSoon = 'Expected Soon';
+  static const String periodExpected = 'Period Expected';
+  static const String periodExpectedToday = 'Your period is expected today';
+  static const String periodExpectedTomorrow = 'Your period is expected tomorrow';
+  static const String inDays = 'In {days} days';
+  static const String expectedDate = 'Expected Date';
+  static const String helpAndFaq = 'Help & FAQ';
+  static const String about = 'About';
+  static const String sendFeedback = 'Send Feedback';
+  static const String language = 'Language';
+  static const String theme = 'Theme';
+  static const String dark = 'Dark';
+  static const String light = 'Light';
+  static const String factoryReset = 'Factory Reset';
+  static const String deleteAllData = 'Delete all data and settings';
+  static const String allDataDeleted = 'All data has been deleted';
+  static const String version = 'Version';
+  static const String general = 'General';
+  static const String support = 'Support';
+  static const String dangerZone = 'Danger Zone';
+  static const String cyclePhases = 'Cycle Phases';
+  static const String trackYourJourney = 'Track your journey through each phase';
+  static const String period = 'Period';
+  static const String fertile = 'Fertile';
+  static const String predicted = 'Predicted';
+  static const String today = 'Today';
+  static const String feedbackThankYou = 'Thank you for your feedback!';
+  static const String feedbackDescription = 'Your feedback helps us improve Floii and make it better for everyone.';
 }

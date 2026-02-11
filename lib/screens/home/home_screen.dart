@@ -10,6 +10,7 @@ import '../../services/storage/storage_service.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';
 import '../../utils/extensions/date_extensions.dart';
+import '../../utils/extensions/localization_extension.dart';
 import '../../widgets/common/cards.dart';
 import '../../widgets/drawers/predictions_drawer.dart';
 import 'widgets/calendar_widget.dart';
@@ -95,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context) => Padding(
             padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
             child: ClayButton(
+              color: Colors.transparent,
               onTap: () => Scaffold.of(context).openDrawer(),
               padding: const EdgeInsets.all(10),
               radius: AppDimensions.radiusMedium,
@@ -117,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(width: 8),
             Text(
-              'Flowy',
+              context.tr('appName'),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
@@ -128,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 4),
             child: ClayButton(
+              color: Colors.transparent,
               onTap: () => Navigator.pushNamed(context, '/settings'),
               // padding: const EdgeInsets.all(10),
               radius: AppDimensions.radiusMedium,
@@ -147,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
               horizontal: AppDimensions.screenPadding),
           child: Column(
             children: [
-              const SizedBox(height: kToolbarHeight + 20),
+              const SizedBox(height: kToolbarHeight),
               CycleStatusCard(
                 stats: stats,
                 onTap: () => _showInsights(context, stats),
@@ -166,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onDateTap: _handleDateTap,
                 onDateLongPress: _showPeriodEditor,
               ),
-              const SizedBox(height: AppDimensions.sectionSpacing),
+              const SizedBox(height: AppDimensions.elementSpacing * 2),
               if (stats['periods'] != null &&
                   (stats['periods'] as List).isNotEmpty &&
                   CycleCalculationService.getCurrentCycle(stats['periods']) !=
@@ -225,11 +228,12 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       _showClayDialog(
-        title: 'Start Period?',
-        content: 'Did your period start on ${date.format('MMM dd')}?',
+        title: context.tr('startPeriod'),
+        content: context
+            .trArgs('startPeriodMessage', {'date': date.format('MMM dd')}),
         icon: Icons.water_drop,
         iconColor: AppColors.period,
-        confirmText: 'Yes, Start Here',
+        confirmText: context.tr('confirm'),
         onConfirm: () {
           _markPeriodRange(date, _menstrualDays);
         },
@@ -244,12 +248,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     _showClayDialog(
-      title: 'Confirm Prediction',
-      content:
-          'Accept predicted period starting from ${predictionStart.format('MMM dd')}?',
+      title: context.tr('confirmPrediction'),
+      content: context.trArgs(
+          'acceptPredictedPeriod', {'date': predictionStart.format('MMM dd')}),
       icon: Icons.auto_awesome,
       iconColor: AppColors.predicted,
-      confirmText: 'Accept',
+      confirmText: context.tr('accept'),
       onConfirm: () {
         _markPeriodRange(predictionStart, 7);
       },
@@ -330,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? Colors.white.withOpacity(0.05)
                           : theme.colorScheme.surfaceContainerHighest,
                       child: Text(
-                        'Cancel',
+                        context.tr('cancel'),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                         ),
@@ -434,14 +438,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: AppDimensions.elementSpacing),
             Text(
-              'Welcome to Flowy!',
+              context.tr('welcomeTitle'),
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: AppDimensions.smallSpacing),
             Text(
-              'Track your first period to get personalized insights and predictions.',
+              context.tr('welcomeSubtitle'),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
@@ -456,8 +460,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(
                       vertical: AppDimensions.elementSpacing),
                 ),
-                child: const Text(
-                  'Track My Period',
+                child: Text(
+                  context.tr('trackMyPeriod'),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: AppDimensions.fontLarge,

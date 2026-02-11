@@ -30,27 +30,16 @@ class ClayCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
 
-    // Theme-aware shadows: NO shadows in dark mode, claymorphism in light
+    // Theme-aware shadows: NO shadows in dark mode, minimal in light for performance
     final clayShadows = shadows ??
         (isDark
             ? [] // No shadows in dark mode - clean flat design
             : [
-                // Light mode: claymorphism shadows only
+                // Light mode: single subtle shadow for performance
                 BoxShadow(
-                  color: Colors.white.withOpacity(0.8),
-                  blurRadius: 8,
-                  offset: const Offset(-4, -4),
-                ),
-                BoxShadow(
-                  color: AppColors.clayShadow.withOpacity(0.5),
-                  blurRadius: 8,
-                  offset: const Offset(4, 4),
-                ),
-                BoxShadow(
-                  color: AppColors.shadow.withOpacity(0.1),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                  spreadRadius: -4,
+                  color: AppColors.clayShadow.withOpacity(0.15),
+                  blurRadius: 6,
+                  offset: const Offset(0, 3),
                 ),
               ]);
 
@@ -105,40 +94,48 @@ class MetricCard extends StatelessWidget {
 
     return ClayCard(
       onTap: onTap,
-      padding: const EdgeInsets.all(AppDimensions.cardPadding),
+      padding: const EdgeInsets.all(AppDimensions.screenPadding),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (icon != null) ...[
-            Container(
-              padding: const EdgeInsets.all(0),
-              decoration: BoxDecoration(
-                color: (color ?? AppColors.primary).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-              ),
-              child: Icon(
-                icon,
-                color: color ?? AppColors.primary,
-                size: AppDimensions.iconMedium,
+          Center(
+            child: Text(
+              title,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
-            const SizedBox(height: AppDimensions.elementSpacing),
-          ],
-          Text(
-            title,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
-            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (icon != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    color: (color ?? AppColors.primary).withOpacity(0.1),
+                    borderRadius:
+                        BorderRadius.circular(AppDimensions.radiusMedium),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: color ?? AppColors.primary,
+                    size: AppDimensions.iconMedium,
+                  ),
+                ),
+                const SizedBox(height: AppDimensions.elementSpacing),
+              ],
+              Text(
+                value,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: color ?? AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: AppDimensions.smallSpacing),
-          Text(
-            value,
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: color ?? AppColors.primary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
         ],
       ),
     );
@@ -173,8 +170,8 @@ class StatCard extends StatelessWidget {
           : [
               BoxShadow(
                 color: AppColors.shadow.withOpacity(0.08),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
             ],
       child: Column(
@@ -238,26 +235,7 @@ class InfoCard extends StatelessWidget {
     return ClayCard(
       padding: padding ?? const EdgeInsets.all(AppDimensions.cardPadding),
       color: backgroundColor ?? theme.colorScheme.surface,
-      shadows: isDark
-          ? [] // No shadows in dark mode
-          : [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.9),
-                blurRadius: 12,
-                offset: const Offset(-6, -6),
-              ),
-              BoxShadow(
-                color: AppColors.clayShadow.withOpacity(0.4),
-                blurRadius: 12,
-                offset: const Offset(6, 6),
-              ),
-              BoxShadow(
-                color: AppColors.shadow.withOpacity(0.1),
-                blurRadius: 24,
-                offset: const Offset(0, 12),
-                spreadRadius: -6,
-              ),
-            ],
+      // Use default ClayCard shadows for consistency and performance
       child: child,
     );
   }
@@ -294,33 +272,24 @@ class _ClayButtonState extends State<ClayButton> {
 
     // NO animated container - use regular Container to prevent flash
     // during theme transitions
+    // Minimal shadows for performance in light mode
     final shadows = _isPressed
         ? (isDark
             ? [] // No pressed shadows in dark
             : [
                 BoxShadow(
-                    color: AppColors.clayShadow.withOpacity(0.3),
-                    blurRadius: 4,
-                    offset: const Offset(2, 2),
-                    spreadRadius: -1),
-                BoxShadow(
-                    color: Colors.white.withOpacity(0.5),
-                    blurRadius: 4,
-                    offset: const Offset(-2, -2),
+                    color: AppColors.clayShadow.withOpacity(0.2),
+                    blurRadius: 3,
+                    offset: const Offset(1, 1),
                     spreadRadius: -1),
               ])
         : (isDark
             ? [] // No shadows in dark mode at all
             : [
                 BoxShadow(
-                  color: Colors.white.withOpacity(0.8),
-                  blurRadius: 8,
-                  offset: const Offset(-4, -4),
-                ),
-                BoxShadow(
-                  color: AppColors.clayShadow.withOpacity(0.4),
-                  blurRadius: 8,
-                  offset: const Offset(4, 4),
+                  color: AppColors.clayShadow.withOpacity(0.12),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
               ]);
 

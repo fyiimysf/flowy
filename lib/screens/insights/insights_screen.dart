@@ -5,6 +5,7 @@ import '../../services/cycle/cycle_calculation_service.dart';
 import '../../services/cycle/phase_service.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';
+import '../../utils/extensions/localization_extension.dart';
 import '../../widgets/common/cards.dart';
 import '../../widgets/common/indicators.dart';
 import 'widgets/fertility_forecast.dart';
@@ -24,7 +25,8 @@ class InsightsScreen extends StatelessWidget {
     final prediction = stats['prediction'] as DateTime?;
     final phaseName = PhaseService.getPhaseName(DateTime.now(), stats);
     final phaseColor = PhaseService.getPhaseColor(phaseName);
-    final currentPhase = PhaseService.getPhaseDisplay(DateTime.now(), stats);
+    final currentPhase =
+        PhaseService.getPhaseDisplay(DateTime.now(), stats, context);
     final cycleProgress = CycleCalculationService.calculateProgress(
       stats['periods'] ?? [],
       stats['average'] ?? 28,
@@ -39,7 +41,7 @@ class InsightsScreen extends StatelessWidget {
         slivers: [
           // Custom app bar
           SliverAppBar(
-            expandedHeight: 100,
+            expandedHeight: 80,
             floating: false,
             pinned: true,
             elevation: 0,
@@ -53,7 +55,7 @@ class InsightsScreen extends StatelessWidget {
                     size: AppDimensions.iconMedium,
                   ),
                   const SizedBox(width: 8),
-                  const Text('Cycle Insights'),
+                  Text(context.tr('insights')),
                 ],
               ),
               centerTitle: true,
@@ -67,10 +69,10 @@ class InsightsScreen extends StatelessWidget {
                 // Progress card
                 _buildProgressCard(cycleProgress, currentPhase, phaseColor,
                     stats, context, currentCycleDay, daysUntil),
-                const SizedBox(height: AppDimensions.sectionSpacing),
+                const SizedBox(height: AppDimensions.smallSpacing),
                 // Statistics
                 StatisticsGrid(stats: stats),
-                const SizedBox(height: AppDimensions.sectionSpacing),
+                const SizedBox(height: AppDimensions.smallSpacing),
                 // Phase breakdown
                 PhaseBreakdown(stats: stats),
                 const SizedBox(height: AppDimensions.sectionSpacing),
@@ -98,22 +100,11 @@ class InsightsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(AppDimensions.cardPadding),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isNarrow = constraints.maxWidth < 350;
+          final isNarrow = constraints.maxWidth < 300;
 
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (isNarrow) ...[
-                // Vertical layout for narrow screens
-                ProgressIndicator(
-                  value: progress,
-                  size: 80,
-                  strokeWidth: 10,
-                  color: phaseColor,
-                  label: 'Cycle',
-                ),
-                const SizedBox(height: AppDimensions.elementSpacing),
-              ],
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -124,51 +115,53 @@ class InsightsScreen extends StatelessWidget {
                       size: 80,
                       strokeWidth: 10,
                       color: phaseColor,
-                      label: 'Cycle',
+                      label: context.tr('cycle'),
                     ),
                     const SizedBox(width: AppDimensions.elementSpacing),
                   ],
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: isNarrow
+                          ? CrossAxisAlignment.center
+                          : CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppDimensions.elementSpacing,
-                            vertical: AppDimensions.smallSpacing,
-                          ),
-                          decoration: BoxDecoration(
-                            color: phaseColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusCircular),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                PhaseService.getPhaseIcon(
-                                  PhaseService.getPhaseName(
-                                      DateTime.now(), stats),
-                                ),
-                                color: phaseColor,
-                                size: AppDimensions.iconSmall,
-                              ),
-                              const SizedBox(width: AppDimensions.smallSpacing),
-                              Flexible(
-                                child: Text(
-                                  'Current Phase',
-                                  style: TextStyle(
-                                    color: phaseColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: AppDimensions.fontSmall,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: AppDimensions.elementSpacing,
+                        //     vertical: AppDimensions.smallSpacing,
+                        //   ),
+                        //   decoration: BoxDecoration(
+                        //     color: phaseColor.withOpacity(0.1),
+                        //     borderRadius: BorderRadius.circular(
+                        //         AppDimensions.radiusCircular),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     children: [
+                        //       Icon(
+                        //         PhaseService.getPhaseIcon(
+                        //           PhaseService.getPhaseName(
+                        //               DateTime.now(), stats),
+                        //         ),
+                        //         color: phaseColor,
+                        //         size: AppDimensions.iconSmall,
+                        //       ),
+                        //       const SizedBox(width: AppDimensions.smallSpacing),
+                        //       Flexible(
+                        //         child: Text(
+                        //           'Current Phase',
+                        //           style: TextStyle(
+                        //             color: phaseColor,
+                        //             fontWeight: FontWeight.w700,
+                        //             fontSize: AppDimensions.fontSmall,
+                        //           ),
+                        //           overflow: TextOverflow.ellipsis,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         const SizedBox(height: AppDimensions.smallSpacing),
                         Text(
                           currentPhase,
@@ -182,7 +175,7 @@ class InsightsScreen extends StatelessWidget {
                         const SizedBox(height: AppDimensions.tinySpacing),
                         Text(
                           currentCycleDay != null
-                              ? 'Day $currentCycleDay of ${stats['average'] ?? 28} day cycle'
+                              ? '${context.tr('Day')} $currentCycleDay ${context.tr('of')} ${stats['average'] ?? 28}'
                               : 'Track your period to see cycle day',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -196,7 +189,7 @@ class InsightsScreen extends StatelessWidget {
                         if (daysUntil != null && daysUntil >= 0) ...[
                           const SizedBox(height: AppDimensions.tinySpacing),
                           Text(
-                            '$daysUntil days until next period',
+                            '$daysUntil ${context.tr('days')} ${context.tr('In')} ${context.tr('nextPeriod')}',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: AppColors.primary,
@@ -208,6 +201,27 @@ class InsightsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: AppDimensions.elementSpacing),
+              Stack(
+                alignment: AlignmentGeometry.centerRight,
+                children: [
+                  if (isNarrow) ...[
+                    // Vertical layout for narrow screens
+                    LinearProgressIndicator(
+                      value: progress,
+                      // size: 100,
+                      // strokeWidth: 10,
+                      year2023: false,
+                      color: phaseColor,
+                      minHeight: 30,
+                      borderRadius: BorderRadiusDirectional.circular(4),
+                      backgroundColor: phaseColor.withAlpha(60),
+                      stopIndicatorColor: phaseColor.withAlpha(255),
+                      // label: 'Cycle',
+                    ),
+                  ],
                 ],
               ),
             ],

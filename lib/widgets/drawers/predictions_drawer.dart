@@ -1,5 +1,6 @@
 // lib/widgets/drawers/predictions_drawer.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/cycle_models.dart';
@@ -27,7 +28,7 @@ class PredictionsDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     final currentCycle = CycleCalculationService.getCurrentCycle(
       stats['periods'] ?? [],
     );
@@ -41,10 +42,11 @@ class PredictionsDrawer extends StatelessWidget {
     );
 
     return Drawer(
+      width: 325,
       child: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
+            _buildHeader(context),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(AppDimensions.elementSpacing),
@@ -76,12 +78,13 @@ class PredictionsDrawer extends StatelessWidget {
                           ),
                           const SizedBox(width: AppDimensions.smallSpacing),
                           Text(
-                            'UPCOMING CYCLES',
+                            ' ${context.tr('cycle')} ${context.tr('Upcoming')}',
                             style: TextStyle(
                               fontSize: AppDimensions.fontSmall,
                               letterSpacing: 1.2,
                               fontWeight: FontWeight.w700,
-                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.5),
                             ),
                           ),
                         ],
@@ -105,7 +108,7 @@ class PredictionsDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Container(
       height: 140,
       decoration: BoxDecoration(
@@ -157,29 +160,29 @@ class PredictionsDrawer extends StatelessWidget {
             ),
           ),
           // Content
-          const Center(
+          Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.insights,
                   size: 44,
                   color: Colors.white,
                 ),
-                SizedBox(height: AppDimensions.smallSpacing),
+                const SizedBox(height: AppDimensions.smallSpacing),
                 Text(
-                  'Cycle Insights',
-                  style: TextStyle(
+                  '${context.tr('cycle')} ${context.tr('insights')}',
+                  style: const TextStyle(
                     fontSize: 24,
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.5,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
-                  'Track & predict your cycles',
-                  style: TextStyle(
+                  context.tr('appTagline'),
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white70,
                     fontWeight: FontWeight.w500,
@@ -193,9 +196,10 @@ class PredictionsDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildHistorySection(BuildContext context, List<PeriodRange> ranges, bool isDark) {
+  Widget _buildHistorySection(
+      BuildContext context, List<PeriodRange> ranges, bool isDark) {
     final theme = Theme.of(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -211,7 +215,7 @@ class PredictionsDrawer extends StatelessWidget {
               ),
               const SizedBox(width: AppDimensions.smallSpacing),
               Text(
-                'HISTORY',
+                context.tr('history'),
                 style: TextStyle(
                   fontSize: AppDimensions.fontSmall,
                   letterSpacing: 1.2,
@@ -236,7 +240,7 @@ class PredictionsDrawer extends StatelessWidget {
                 const SizedBox(width: AppDimensions.elementSpacing),
                 Expanded(
                   child: Text(
-                    'No period history yet. Start tracking to see your cycles here.',
+                    context.tr('welcomeSubtitle'),
                     style: TextStyle(
                       color: theme.colorScheme.onSurface.withOpacity(0.6),
                       fontSize: AppDimensions.fontMedium,
@@ -340,9 +344,9 @@ class _CycleCard extends StatelessWidget {
     final phaseDetails = PhaseService.calculatePhaseDetails(cycle, stats);
 
     return ClayCard(
-      color: isCurrent 
-          ? null 
-          : isDark 
+      color: isCurrent
+          ? null
+          : isDark
               ? Colors.white.withOpacity(0.03)
               : theme.colorScheme.surfaceContainerHighest,
       // No custom shadows - ClayCard handles light/dark mode automatically
@@ -351,10 +355,10 @@ class _CycleCard extends StatelessWidget {
           : [
               BoxShadow(
                 color: AppColors.primary.withOpacity(0.15),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
+                blurRadius: 6,
+                offset: const Offset(0, 3),
               ),
-           ],
+            ],
       child: Theme(
         data: Theme.of(context).copyWith(
           dividerColor: Colors.transparent,
@@ -376,7 +380,9 @@ class _CycleCard extends StatelessWidget {
             ),
           ),
           title: Text(
-            isCurrent ? 'Current Cycle' : 'Predicted Cycle ${cycle.index + 1}',
+            isCurrent
+                ? '${context.tr('current')} ${context.tr('cycle')}'
+                : '${context.tr('predicted')} ${context.tr('cycle')} ${cycle.index + 1}',
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
@@ -397,7 +403,8 @@ class _CycleCard extends StatelessWidget {
                         BorderRadius.circular(AppDimensions.radiusSmall),
                     child: LinearProgressIndicator(
                       value: progress,
-                      backgroundColor: theme.colorScheme.onSurface.withOpacity(0.1),
+                      backgroundColor:
+                          theme.colorScheme.onSurface.withOpacity(0.1),
                       valueColor:
                           AlwaysStoppedAnimation<Color>(AppColors.primary),
                       minHeight: 6,
@@ -427,20 +434,24 @@ class _CycleCard extends StatelessWidget {
   Widget _buildCycleStats(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return ClayCard(
-      color: isDark ? Colors.white.withOpacity(0.05) : theme.colorScheme.surfaceContainerHighest,
+      color: isDark
+          ? Colors.white.withOpacity(0.05)
+          : theme.colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.all(AppDimensions.elementSpacing),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem('Avg Cycle', '${stats['average'] ?? 28} days', theme),
+          _buildStatItem('${context.tr('averageCycle')}',
+              '${stats['average'] ?? 28} days', theme),
           Container(
             width: 1,
             height: 30,
             color: theme.colorScheme.outline.withOpacity(0.3),
           ),
-          _buildStatItem('Period', '${cycle.index} days', theme),
+          _buildStatItem(
+              '${context.tr('period')}', '${cycle.index} days', theme),
         ],
       ),
     );

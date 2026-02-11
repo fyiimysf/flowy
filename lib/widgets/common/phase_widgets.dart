@@ -1,5 +1,6 @@
 // lib/widgets/common/phase_widgets.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../models/cycle_models.dart';
 import '../../services/cycle/phase_service.dart';
@@ -35,18 +36,13 @@ class PhaseCard extends StatelessWidget {
           : [
               // Only light mode + current gets shadows
               BoxShadow(
-                color: color.withOpacity(0.3),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-              BoxShadow(
-                color: Colors.white.withOpacity(0.8),
-                blurRadius: 8,
-                offset: const Offset(-3, -3),
+                color: color.withOpacity(0.25),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
             ],
       child: SizedBox(
-        width: AppDimensions.phaseCardWidth,
+        width: 90,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -59,23 +55,23 @@ class PhaseCard extends StatelessWidget {
               child: Icon(
                 PhaseService.getPhaseIcon(phase.name),
                 color: color,
-                size: AppDimensions.iconMedium,
+                size: AppDimensions.iconLarge,
               ),
-            ),
-            const SizedBox(height: AppDimensions.smallSpacing),
-            Text(
-              phase.name,
-              style: theme.textTheme.titleSmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w700,
-                  ),
             ),
             const SizedBox(height: AppDimensions.tinySpacing),
             Text(
+              phase.name,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: color,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            // const SizedBox(height: AppDimensions.tinySpacing),
+            Text(
               '${phase.duration} days',
               style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
             ),
           ],
         ),
@@ -131,14 +127,14 @@ class PhaseExpansionTile extends StatelessWidget {
           title: Text(
             phase.name,
             style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+              fontWeight: FontWeight.w600,
+            ),
           ),
           subtitle: Text(
             '${_formatDate(phase.startDate)} - ${_formatDate(phase.endDate)}',
             style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
           ),
           trailing: PhaseChip(
             label: '${phase.duration}d',
@@ -183,13 +179,16 @@ class PhaseExpansionTile extends StatelessWidget {
                         ),
                         const SizedBox(width: AppDimensions.elementSpacing),
                         Text(
-                          isCurrent ? '$daysRemaining days left' : '--',
+                          isCurrent
+                              ? '$daysRemaining ${context.tr('days')} ${context.tr("left")}'
+                              : '--',
                           style: theme.textTheme.bodySmall?.copyWith(
-                                color: isCurrent ? color : theme.colorScheme.onSurface.withOpacity(0.5),
-                                fontWeight: isCurrent
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
-                              ),
+                            color: isCurrent
+                                ? color
+                                : theme.colorScheme.onSurface.withOpacity(0.5),
+                            fontWeight:
+                                isCurrent ? FontWeight.w600 : FontWeight.normal,
+                          ),
                         ),
                       ],
                     ),
@@ -216,10 +215,12 @@ class PhaseExpansionTile extends StatelessWidget {
                         const SizedBox(width: AppDimensions.smallSpacing),
                         Expanded(
                           child: Text(
-                            PhaseService.getPhaseDescription(phase.name),
+                            PhaseService.getPhaseDescription(
+                                phase.name, context),
                             style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withOpacity(0.8),
-                                ),
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.8),
+                            ),
                           ),
                         ),
                       ],
@@ -322,15 +323,15 @@ class PhaseRow extends StatelessWidget {
                 Text(
                   phase.name,
                   style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: AppDimensions.tinySpacing),
                 Text(
                   '${_formatDate(phase.startDate)} - ${_formatDate(phase.endDate)}',
                   style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  ),
                 ),
               ],
             ),
@@ -348,9 +349,9 @@ class PhaseRow extends StatelessWidget {
             child: Text(
               '${phase.duration} days',
               style: theme.textTheme.bodySmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: color,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],

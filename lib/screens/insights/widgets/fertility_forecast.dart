@@ -1,5 +1,6 @@
 // lib/screens/insights/widgets/fertility_forecast.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../services/cycle/prediction_service.dart';
 import '../../../utils/constants/colors.dart';
@@ -42,7 +43,7 @@ class FertilityForecast extends StatelessWidget {
               ),
               const SizedBox(width: AppDimensions.elementSpacing),
               Text(
-                'Fertility Forecast',
+                context.tr('fertForcast'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -52,13 +53,13 @@ class FertilityForecast extends StatelessWidget {
           const SizedBox(height: AppDimensions.elementSpacing),
           Row(
             children: [
-              const FertilityIndicator(
-                label: 'Fertile Window',
+              FertilityIndicator(
+                label: '${context.tr('fertile')} ${context.tr('days')}',
                 color: AppColors.fertile,
               ),
               const SizedBox(width: AppDimensions.elementSpacing * 2),
-              const FertilityIndicator(
-                label: 'Ovulation Day',
+              FertilityIndicator(
+                label: '${context.tr('ovulationPhase')} ${context.tr('Day')}',
                 color: AppColors.ovulation,
               ),
             ],
@@ -90,18 +91,18 @@ class FertilityForecast extends StatelessWidget {
                     width: 1.2,
                   ),
                 ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                date.day.toString(),
-                style: TextStyle(
-                  color: isOvulation
-                      ? AppColors.ovulation
-                      : AppColors.fertile,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      date.day.toString(),
+                      style: TextStyle(
+                        color: isOvulation
+                            ? AppColors.ovulation
+                            : AppColors.fertile,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     if (isOvulation)
                       const Icon(
                         Icons.circle,

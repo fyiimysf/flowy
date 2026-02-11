@@ -1,5 +1,6 @@
 // lib/screens/home/dialogs/period_editor_dialog.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../services/storage/storage_service.dart';
@@ -41,7 +42,7 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -87,7 +88,7 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
 
   Widget _buildHeader() {
     final theme = Theme.of(context);
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -121,7 +122,7 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                 ),
                 const SizedBox(width: AppDimensions.smallSpacing),
                 Text(
-                  'Edit Period',
+                  context.tr('editPeriod'),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -164,13 +165,14 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
   Widget _buildDaysGrid() {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final cellSize = constraints.maxWidth / 7;
         return Container(
           height: cellSize * 2,
-          padding: const EdgeInsets.symmetric(vertical: AppDimensions.elementSpacing),
+          padding: const EdgeInsets.symmetric(
+              vertical: AppDimensions.elementSpacing),
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -188,17 +190,19 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                 onTap: () => _toggleDay(date),
                 child: Container(
                   // Removed AnimatedContainer to prevent theme switch flash
-                  margin: const EdgeInsets.all(AppDimensions.calendarDaySpacing * 2),
+                  margin: const EdgeInsets.all(
+                      AppDimensions.calendarDaySpacing * 2),
                   decoration: BoxDecoration(
-                    color: isPeriod 
-                        ? AppColors.period.withOpacity(0.15) 
+                    color: isPeriod
+                        ? AppColors.period.withOpacity(0.15)
                         : isDark
                             ? Colors.white.withOpacity(0.05)
                             : theme.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                    borderRadius:
+                        BorderRadius.circular(AppDimensions.radiusMedium),
                     border: Border.all(
-                      color: isPeriod 
-                          ? AppColors.period 
+                      color: isPeriod
+                          ? AppColors.period
                           : theme.colorScheme.outline.withOpacity(0.2),
                       width: isPeriod ? 2 : 1,
                     ),
@@ -231,7 +235,9 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                         child: Text(
                           date.day.toString(),
                           style: TextStyle(
-                            color: isPeriod ? AppColors.period : theme.colorScheme.onSurface,
+                            color: isPeriod
+                                ? AppColors.period
+                                : theme.colorScheme.onSurface,
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
                           ),
@@ -248,13 +254,14 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                               color: AppColors.period,
                               shape: BoxShape.circle,
                               boxShadow: isDark
-                                ? []
-                                : [
-                                    BoxShadow(
-                                      color: AppColors.period.withOpacity(0.4),
-                                      blurRadius: 4,
-                                    ),
-                                  ],
+                                  ? []
+                                  : [
+                                      BoxShadow(
+                                        color:
+                                            AppColors.period.withOpacity(0.4),
+                                        blurRadius: 4,
+                                      ),
+                                    ],
                             ),
                           ),
                         ),
@@ -272,9 +279,11 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
   Widget _buildDurationControl() {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return ClayCard(
-      color: isDark ? Colors.white.withOpacity(0.05) : theme.colorScheme.surfaceContainerHighest,
+      color: isDark
+          ? Colors.white.withOpacity(0.05)
+          : theme.colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.all(AppDimensions.elementSpacing),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -286,7 +295,7 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
           ),
           const SizedBox(width: AppDimensions.smallSpacing),
           Text(
-            'Duration:',
+            context.tr('duration'),
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
             ),
@@ -295,7 +304,7 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
           ...List.generate(3, (index) {
             final days = 5 + index;
             final isSelected = menstrualDays == days;
-            
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: GestureDetector(
@@ -311,10 +320,11 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                     vertical: AppDimensions.smallSpacing,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected 
-                        ? AppColors.primary 
+                    color: isSelected
+                        ? AppColors.primary
                         : theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                    borderRadius:
+                        BorderRadius.circular(AppDimensions.radiusMedium),
                     boxShadow: isDark
                         ? []
                         : isSelected
@@ -341,7 +351,9 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                   child: Text(
                     '$days',
                     style: TextStyle(
-                      color: isSelected ? Colors.white : theme.colorScheme.onSurface,
+                      color: isSelected
+                          ? Colors.white
+                          : theme.colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -358,24 +370,6 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
     return Row(
       children: [
         Expanded(
-          flex: 2,
-          child: ElevatedButton.icon(
-            icon: const Icon(Icons.check_circle_outline, size: 20),
-            label: const Text(
-              'Save',
-              style: TextStyle(fontWeight: FontWeight.w700),
-            ),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: AppDimensions.elementSpacing),
-            ),
-            onPressed: () {
-              widget.onSave(startDate, menstrualDays);
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        const SizedBox(width: AppDimensions.elementSpacing),
-        Expanded(
           child: ClayButton(
             onTap: () {
               widget.onClear(startDate);
@@ -387,12 +381,12 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
               children: [
                 Icon(
                   Icons.delete_outline,
-                  size: 18,
+                  size: 22,
                   color: AppColors.error,
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  'Clear',
+                  context.tr('clear'),
                   style: TextStyle(
                     color: AppColors.error,
                     fontWeight: FontWeight.w600,
@@ -400,6 +394,25 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                 ),
               ],
             ),
+          ),
+        ),
+        const SizedBox(width: AppDimensions.elementSpacing),
+        Expanded(
+          flex: 1,
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.check_circle_outline, size: 24),
+            label: Text(
+              context.tr('save'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                  vertical: AppDimensions.elementSpacing),
+            ),
+            onPressed: () {
+              widget.onSave(startDate, menstrualDays);
+              Navigator.pop(context);
+            },
           ),
         ),
       ],

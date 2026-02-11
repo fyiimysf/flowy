@@ -42,9 +42,9 @@ class ProgressIndicator extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.shadow.withOpacity(0.1),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
+                  color: AppColors.shadow.withOpacity(0.08),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),

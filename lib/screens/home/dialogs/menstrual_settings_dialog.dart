@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/dimensions.dart';
 import '../../../utils/constants/strings.dart';
+import '../../../utils/extensions/localization_extension.dart';
 import '../../../widgets/common/cards.dart';
 
 class MenstrualSettingsDialog extends StatefulWidget {
@@ -73,7 +74,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
             const SizedBox(height: AppDimensions.elementSpacing),
             // Title
             Text(
-              'Welcome to Flowy!',
+              context.tr('welcomeTitle'),
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -81,7 +82,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
             const SizedBox(height: AppDimensions.smallSpacing),
             // Subtitle
             Text(
-              AppStrings.menstrualDaysQuestion,
+              context.tr('menstrualDaysQuestion'),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
@@ -106,7 +107,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                       ),
                       const SizedBox(width: AppDimensions.smallSpacing),
                       Text(
-                        'Period Duration',
+                        '${context.tr('period')} ${context.tr('Duration')}',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -140,29 +141,23 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                                     ? AppColors.primary
                                     : theme.colorScheme.surface,
                                 borderRadius: BorderRadius.circular(
-                                    AppDimensions.radiusMedium),
+                                    AppDimensions.radiusSmall),
                                 boxShadow: isDark
                                     ? []
                                     : isSelected
                                         ? [
                                             BoxShadow(
                                               color: AppColors.primary
-                                                  .withOpacity(0.4),
-                                              blurRadius: 12,
-                                              offset: const Offset(0, 4),
+                                                  .withOpacity(0.35),
+                                              blurRadius: 6,
+                                              offset: const Offset(0, 3),
                                             ),
                                           ]
                                         : [
                                             BoxShadow(
-                                              color:
-                                                  Colors.white.withOpacity(0.8),
-                                              blurRadius: 4,
-                                              offset: const Offset(-3, -3),
-                                            ),
-                                            BoxShadow(
                                               color: AppColors.clayShadow
-                                                  .withOpacity(0.3),
-                                              blurRadius: 4,
+                                                  .withOpacity(0.15),
+                                              blurRadius: 3,
                                               offset: const Offset(3, 3),
                                             ),
                                           ],
@@ -187,7 +182,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                   ),
                   const SizedBox(height: AppDimensions.elementSpacing),
                   Text(
-                    '$selectedDays days',
+                    '$selectedDays ${context.tr('days')}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w700,
@@ -209,6 +204,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                     child: Text(
                       AppStrings.cancel,
                       style: TextStyle(
+                        fontSize: 17,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -218,10 +214,11 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                 Expanded(
                   flex: 2,
                   child: ElevatedButton.icon(
-                    icon: const Icon(Icons.check_circle, size: 20),
+                    icon: const Icon(Icons.check, size: 35),
                     label: const Text(
                       AppStrings.save,
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
                     ),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(

@@ -2,9 +2,11 @@
 
 import 'dart:math';
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../services/cycle/cycle_calculation_service.dart';
 import '../../../utils/constants/colors.dart';
+
 import '../../../utils/constants/dimensions.dart';
 import '../../../widgets/common/cards.dart';
 
@@ -25,7 +27,7 @@ class StatisticsGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Statistics',
+          context.tr('stats'),
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -40,28 +42,28 @@ class StatisticsGrid extends StatelessWidget {
           crossAxisSpacing: AppDimensions.elementSpacing,
           children: [
             MetricCard(
-              title: 'Average Cycle',
-              value: '${stats['average'] ?? '--'} days',
+              title: context.tr('averageCycle'),
+              value: '${stats['average'] ?? '--'} ${context.tr('days')}',
               icon: Icons.calendar_today,
             ),
             MetricCard(
-              title: 'Consistency',
+              title: context.tr('cycleConsistency'),
               value: cycleLengths.length > 1
                   ? '${CycleCalculationService.calculateConsistency(cycleLengths)}%'
                   : '--',
               icon: Icons.trending_up,
             ),
             MetricCard(
-              title: 'Longest Cycle',
+              title: context.tr('longestCycle'),
               value: cycleLengths.isNotEmpty
-                  ? '${cycleLengths.reduce(max)} days'
+                  ? '${cycleLengths.reduce(max)} ${context.tr('days')}'
                   : '--',
               icon: Icons.arrow_upward,
             ),
             MetricCard(
-              title: 'Shortest Cycle',
+              title: context.tr('shortestCycle'),
               value: cycleLengths.isNotEmpty
-                  ? '${cycleLengths.reduce(min)} days'
+                  ? '${cycleLengths.reduce(min)} ${context.tr('days')}'
                   : '--',
               icon: Icons.arrow_downward,
             ),

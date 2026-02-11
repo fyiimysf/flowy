@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../models/cycle_models.dart';
 import '../../services/storage/storage_service.dart';
+import '../../services/localization/app_localizations.dart';
+import '../../services/localization/language_service.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';
+import '../../utils/constants/strings.dart';
+import '../../utils/extensions/localization_extension.dart';
 import '../../widgets/common/cards.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -17,6 +21,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final StorageService _storage = StorageService();
+  final LanguageService _languageService = LanguageService();
 
   Future<void> _deleteAllData() async {
     await _storage.clearAllData();
@@ -36,10 +41,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               const Icon(Icons.delete_outline, color: Colors.white),
               const SizedBox(width: AppDimensions.elementSpacing),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'All data has been deleted',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  context.tr('allDataDeleted'),
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ],
@@ -52,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _confirmDataDeletion() async {
     final theme = Theme.of(context);
-    
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -77,18 +82,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 Text(
-                  'Factory Reset',
+                  context.tr('factoryReset'),
                   style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: AppDimensions.smallSpacing),
                 Text(
-                  'Are you sure you want to delete all data? This action cannot be undone.',
+                  context.tr('deleteAllData'),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
                 Row(
@@ -98,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         onTap: () => Navigator.of(context).pop(),
                         child: Center(
                           child: Text(
-                            'Cancel',
+                            context.tr('cancel'),
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                             ),
@@ -116,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: AppColors.error.withOpacity(0.1),
                         child: Center(
                           child: Text(
-                            'Delete',
+                            context.tr('delete'),
                             style: TextStyle(
                               color: AppColors.error,
                               fontWeight: FontWeight.w700,
@@ -135,11 +140,143 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _showLanguageDialog() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppDimensions.radiusXL),
+          ),
+        ),
+        padding: const EdgeInsets.all(AppDimensions.cardPadding),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Drag handle
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.onSurface.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: AppDimensions.elementSpacing),
+              Text(
+                context.tr('language'),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: AppDimensions.smallSpacing),
+              Text(
+                context.tr('chooseLanguage'),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+              ),
+              const SizedBox(height: AppDimensions.sectionSpacing),
+              ..._languageService.languages.entries.map((entry) {
+                final code = entry.key;
+                final names = entry.value;
+                final isSelected =
+                    _languageService.currentLocale.languageCode == code;
+
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: AppDimensions.smallSpacing),
+                  child: ClayButton(
+                    onTap: () async {
+                      await _languageService.setLanguage(code);
+                      if (mounted) {
+                        Navigator.pop(context);
+                        setState(() {});
+                      }
+                    },
+                    color: isSelected
+                        ? AppColors.primary.withOpacity(0.1)
+                        : isDark
+                            ? Colors.white.withOpacity(0.05)
+                            : theme.colorScheme.surfaceContainerHighest,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColors.primary.withOpacity(0.2)
+                                : theme.colorScheme.onSurface.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              code.toUpperCase(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 12,
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : theme.colorScheme.onSurface
+                                        .withOpacity(0.6),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppDimensions.elementSpacing),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                names['nativeName']!,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: isSelected ? AppColors.primary : null,
+                                ),
+                              ),
+                              Text(
+                                names['name']!,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.6),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (isSelected)
+                          Icon(
+                            Icons.check_circle,
+                            color: AppColors.primary,
+                            size: AppDimensions.iconMedium,
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+              const SizedBox(height: AppDimensions.elementSpacing),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -159,7 +296,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     size: AppDimensions.iconXL,
                   ),
                   const SizedBox(height: 8),
-                  const Text('Settings'),
+                  Text(context.tr('settings')),
                 ],
               ),
               centerTitle: true,
@@ -172,21 +309,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               delegate: SliverChildListDelegate([
                 const SizedBox(height: AppDimensions.sectionSpacing * 2),
                 // General section
-                _buildSectionHeader(context, 'General', Icons.tune),
+                _buildSectionHeader(context, context.tr('general'), Icons.tune),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 ClayCard(
                   child: Column(
                     children: [
                       ValueListenableBuilder<Box<Options>>(
-                        valueListenable: Hive.box<Options>('options').listenable(),
+                        valueListenable:
+                            Hive.box<Options>('options').listenable(),
                         builder: (context, box, _) {
-                          final options = box.get('theme') ?? Options(darkMode: false);
+                          final options =
+                              box.get('theme') ?? Options(darkMode: false);
                           return _buildSettingTile(
                             context,
                             icon: Icons.color_lens,
                             iconColor: AppColors.peach,
-                            title: 'Theme',
-                            subtitle: options.darkMode ? 'Dark' : 'Light',
+                            title: context.tr('theme'),
+                            subtitle: options.darkMode
+                                ? context.tr('dark')
+                                : context.tr('light'),
                             onTap: () {},
                             onChanged: (val) async {
                               options.darkMode = val;
@@ -205,16 +346,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _buildSettingTile(context,
                           icon: Icons.language,
                           iconColor: AppColors.mint,
-                          title: 'Language',
-                          subtitle: 'English',
-                          onTap: () {},
+                          title: context.tr('language'),
+                          subtitle: _languageService.getLanguageName(
+                              _languageService.currentLocale.languageCode),
+                          onTap: _showLanguageDialog,
                           onChanged: (e) {}),
                     ],
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
                 // Support section
-                _buildSectionHeader(context, 'Support', Icons.support),
+                _buildSectionHeader(
+                    context, context.tr('support'), Icons.support),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 ClayCard(
                   child: Column(
@@ -222,8 +365,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _buildSettingTile(context,
                           icon: Icons.help_outline,
                           iconColor: AppColors.secondary,
-                          title: 'Help & FAQ',
-                          onTap: () {},
+                          title: context.tr('helpAndFaq'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/help-faq'),
                           onChanged: (e) {}),
                       Divider(
                         height: 1,
@@ -233,8 +377,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _buildSettingTile(context,
                           icon: Icons.feedback_outlined,
                           iconColor: AppColors.ovulation,
-                          title: 'Send Feedback',
-                          onTap: () {},
+                          title: context.tr('sendFeedback'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/feedback'),
                           onChanged: (e) {}),
                       Divider(
                         height: 1,
@@ -244,15 +389,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _buildSettingTile(context,
                           icon: Icons.info_outline,
                           iconColor: AppColors.secondary,
-                          title: 'About',
-                          onTap: () {},
+                          title: context.tr('about'),
+                          onTap: () => Navigator.pushNamed(context, '/about'),
                           onChanged: (e) {}),
                     ],
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
                 // Danger zone
-                _buildSectionHeader(context, 'Danger Zone', Icons.warning_amber,
+                _buildSectionHeader(
+                    context, context.tr('dangerZone'), Icons.warning_amber,
                     color: AppColors.error),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 ClayCard(
@@ -260,8 +406,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: _buildSettingTile(context,
                       icon: Icons.delete_forever,
                       iconColor: AppColors.error,
-                      title: 'Factory Reset',
-                      subtitle: 'Delete all data and settings',
+                      title: context.tr('factoryReset'),
+                      subtitle: context.tr('deleteAllData'),
                       textColor: AppColors.error,
                       onTap: _confirmDataDeletion,
                       onChanged: (e) {}),
@@ -270,10 +416,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Version
                 Center(
                   child: Text(
-                    'Version 1.0.0',
+                    '${context.tr('version')} 1.0.0',
                     style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.4),
-                        ),
+                      color: theme.colorScheme.onSurface.withOpacity(0.4),
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
@@ -288,7 +434,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSectionHeader(BuildContext context, String title, IconData icon,
       {Color? color}) {
     final theme = Theme.of(context);
-    
+
     return Row(
       children: [
         Icon(
@@ -300,10 +446,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Text(
           title,
           style: theme.textTheme.titleSmall?.copyWith(
-                color: color ?? theme.colorScheme.onSurface.withOpacity(0.6),
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1,
-              ),
+            color: color ?? theme.colorScheme.onSurface.withOpacity(0.6),
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1,
+          ),
         ),
       ],
     );
@@ -322,7 +468,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required Function(dynamic) onChanged,
   }) {
     final theme = Theme.of(context);
-    
+
     return ListTile(
       leading: Container(
         decoration: BoxDecoration(
@@ -338,22 +484,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       title: Text(
         title,
         style: theme.textTheme.bodyLarge?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-            ),
+          color: textColor,
+          fontWeight: FontWeight.w600,
+        ),
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle,
               style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
             )
           : null,
       trailing: !isToggle
           ? Icon(
               Icons.chevron_right,
-              color: textColor?.withOpacity(0.5) ?? theme.colorScheme.onSurface.withOpacity(0.4),
+              color: textColor?.withOpacity(0.5) ??
+                  theme.colorScheme.onSurface.withOpacity(0.4),
             )
           : Switch(
               value: value,

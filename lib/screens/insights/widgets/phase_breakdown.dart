@@ -1,5 +1,6 @@
 // lib/screens/insights/widgets/phase_breakdown.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../models/cycle_models.dart';
 import '../../../services/cycle/cycle_calculation_service.dart';
@@ -32,7 +33,7 @@ class PhaseBreakdown extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Phase Breakdown',
+          context.tr('phaseBreakdown'),
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

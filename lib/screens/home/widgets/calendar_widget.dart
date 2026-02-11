@@ -72,16 +72,13 @@ class CalendarWidget extends StatelessWidget {
               }).toList(),
             );
           }),
-          // const SizedBox(height: AppDimensions.smallSpacing),
-
+          // const SizedBox(height: 4),
           // Calendar grid
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-              childAspectRatio: 1,
-            ),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 50),
             itemCount: totalCells,
             itemBuilder: (context, index) {
               final date = _calculateDateForIndex(
@@ -330,28 +327,23 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
     if (isDark) {
       return [];
     }
-    // Light mode: subtle shadows for special days only
+    // Light mode: minimal shadows for performance
     if (isPeriod || isToday) {
       return [
         BoxShadow(
           color:
-              (isPeriod ? AppColors.period : AppColors.today).withOpacity(0.2),
-          blurRadius: 6,
-          offset: const Offset(0, 2),
+              (isPeriod ? AppColors.period : AppColors.today).withOpacity(0.15),
+          blurRadius: 3,
+          offset: const Offset(0, 1),
         ),
       ];
     }
-    // Light mode: claymorphism shadows
+    // Light mode: single subtle shadow
     return [
       BoxShadow(
-        color: Colors.white.withOpacity(0.8),
-        blurRadius: 3,
-        offset: const Offset(-2, -2),
-      ),
-      BoxShadow(
-        color: AppColors.clayShadow.withOpacity(0.3),
-        blurRadius: 3,
-        offset: const Offset(2, 2),
+        color: AppColors.clayShadow.withOpacity(0.1),
+        blurRadius: 2,
+        offset: const Offset(0, 1),
       ),
     ];
   }

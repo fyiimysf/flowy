@@ -1,5 +1,6 @@
 // lib/screens/home/widgets/phase_timeline.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../models/cycle_models.dart';
 import '../../../services/cycle/phase_service.dart';
@@ -21,7 +22,7 @@ class PhaseTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     // Calculate phases based on actual stats including ovulation date
     final phases = PhaseService.calculatePhaseDetails(currentCycle, stats);
 
@@ -48,19 +49,19 @@ class PhaseTimeline extends StatelessWidget {
               ),
               const SizedBox(width: AppDimensions.elementSpacing),
               Text(
-                'Cycle Phases',
+                context.tr('cyclePhases'),
                 style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ],
           ),
           const SizedBox(height: AppDimensions.smallSpacing),
           Text(
-            'Track your journey through each phase',
+            context.tr('trackYourJourney'),
             style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
           ),
           const SizedBox(height: AppDimensions.sectionSpacing),
           // Phase list

@@ -1,5 +1,6 @@
 // lib/services/cycle/phase_service.dart
 
+import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../models/cycle_models.dart';
 import '../../models/enums.dart';
@@ -72,7 +73,8 @@ class PhaseService {
   }
 
   /// Gets phase with icon for display
-  static String getPhaseDisplay(DateTime date, Map<String, dynamic> stats) {
+  static String getPhaseDisplay(
+      DateTime date, Map<String, dynamic> stats, BuildContext context) {
     return getPhase(date, stats).displayName;
   }
 
@@ -93,18 +95,18 @@ class PhaseService {
   }
 
   /// Gets description for a phase
-  static String getPhaseDescription(String phaseName) {
+  static String getPhaseDescription(String phaseName, BuildContext context) {
     switch (phaseName) {
       case 'Menstrual':
-        return 'Rest and self-care. Energy may be lower.';
+        return context.tr('menstrualDescription');
       case 'Follicular':
-        return 'Rising energy and creativity. Great time for new projects.';
+        return context.tr('follicularDescription');
       case 'Ovulation':
-        return 'Peak fertility and energy. You may feel more social.';
+        return context.tr('ovulationDescription');
       case 'Luteal':
-        return 'Slow down and focus inward. Premenstrual symptoms may appear.';
+        return context.tr('lutealDescription');
       default:
-        return 'Track your cycle for personalized insights';
+        return context.tr('nullDescription');
     }
   }
 

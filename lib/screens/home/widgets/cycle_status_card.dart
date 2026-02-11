@@ -6,6 +6,7 @@ import '../../../services/cycle/cycle_calculation_service.dart';
 import '../../../services/cycle/phase_service.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/dimensions.dart';
+import '../../../utils/extensions/localization_extension.dart';
 import '../../../widgets/common/cards.dart';
 import '../../../widgets/common/indicators.dart';
 
@@ -23,27 +24,35 @@ class CycleStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     final periods = (stats['periods'] as List<List<DateTime>>?) ?? [];
     final prediction = stats['prediction'] as DateTime?;
-    
+    final total = stats['average'] ?? 28;
+
     // Check if we have no data
     if (periods.isEmpty) {
       return _buildEmptyState(context, isDark);
     }
-    
+
     // Check if we're near a prediction date (within 7 days)
-    final daysUntil = prediction != null 
-        ? prediction.difference(DateTime.now()).inDays 
+    // Normalize dates to compare without time components
+    final today = DateTime.now();
+    final todayDate = DateTime(today.year, today.month, today.day);
+    final daysUntil = prediction != null
+        ? DateTime(prediction.year, prediction.month, prediction.day)
+            .difference(todayDate)
+            .inDays
         : null;
-    final isNearPrediction = daysUntil != null && daysUntil >= 0 && daysUntil <= 7;
-    
+    final isNearPrediction =
+        daysUntil != null && daysUntil >= 0 && daysUntil <= 7;
+
     if (isNearPrediction && prediction != null) {
       return _buildPredictionState(context, isDark, prediction, daysUntil);
     }
-    
+
     // Normal cycle state
-    final currentPhase = PhaseService.getPhaseDisplay(DateTime.now(), stats);
+    final currentPhase =
+        PhaseService.getPhaseDisplay(DateTime.now(), stats, context);
     final phaseName = PhaseService.getPhaseName(DateTime.now(), stats);
     final phaseColor = PhaseService.getPhaseColor(phaseName);
     final progress = CycleCalculationService.calculateProgress(
@@ -65,10 +74,10 @@ class CycleStatusCard extends StatelessWidget {
                 // Circular progress
                 ProgressIndicator(
                   value: progress,
-                  size: 100,
+                  size: 80,
                   strokeWidth: 12,
                   color: phaseColor,
-                  showPercentage: false,
+                  showPercentage: true,
                 ),
                 const SizedBox(width: AppDimensions.elementSpacing * 2),
                 // Phase info
@@ -96,11 +105,11 @@ class CycleStatusCard extends StatelessWidget {
                             ),
                             const SizedBox(width: AppDimensions.smallSpacing),
                             Text(
-                              'Current Phase',
+                              context.tr('currentPhase'),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                    color: phaseColor,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                color: phaseColor,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ],
                         ),
@@ -109,25 +118,25 @@ class CycleStatusCard extends StatelessWidget {
                       Text(
                         currentPhase,
                         style: theme.textTheme.titleLarge?.copyWith(
-                              color: phaseColor,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          color: phaseColor,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       const SizedBox(height: AppDimensions.tinySpacing),
                       Text(
-                        currentCycleDay != null 
-                            ? 'Day $currentCycleDay of ${stats['average'] ?? 28}'
-                            : 'Track your period',
+                        currentCycleDay != null
+                            ? "${context.tr('Day')} $currentCycleDay ${context.tr('of')} $total"
+                            : context.tr('trackPeriodHint'),
                         style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
-                            ),
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: AppDimensions.sectionSpacing),
+            const SizedBox(height: AppDimensions.smallSpacing * 3),
             // Phase description
             Container(
               padding: const EdgeInsets.all(AppDimensions.elementSpacing),
@@ -149,16 +158,16 @@ class CycleStatusCard extends StatelessWidget {
                   const SizedBox(width: AppDimensions.elementSpacing),
                   Expanded(
                     child: Text(
-                      PhaseService.getPhaseDescription(phaseName),
+                      PhaseService.getPhaseDescription(phaseName, context),
                       style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.8),
-                          ),
+                        color: theme.colorScheme.onSurface.withOpacity(0.8),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: AppDimensions.sectionSpacing),
+            const SizedBox(height: AppDimensions.smallSpacing),
             // Next period info
             if (prediction != null)
               Container(
@@ -190,30 +199,30 @@ class CycleStatusCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Next Period',
-                            style:
-                                theme.textTheme.bodySmall?.copyWith(
-                                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                                    ),
+                            context.tr('nextPeriod'),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
                           ),
                           const SizedBox(height: AppDimensions.tinySpacing),
                           Text(
                             DateFormat('MMMM dd, yyyy').format(prediction),
                             style: theme.textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     Text(
                       daysUntil != null && daysUntil >= 0
-                          ? '$daysUntil days'
+                          ? '$daysUntil ${context.tr('days')}'
                           : 'Soon',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
@@ -223,10 +232,10 @@ class CycleStatusCard extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildEmptyState(BuildContext context, bool isDark) {
     final theme = Theme.of(context);
-    
+
     return ClayCard(
       padding: const EdgeInsets.all(AppDimensions.cardPadding),
       child: Column(
@@ -245,18 +254,18 @@ class CycleStatusCard extends StatelessWidget {
           ),
           const SizedBox(height: AppDimensions.elementSpacing),
           Text(
-            'Welcome to Flowy!',
+            context.tr('welcomeTitle'),
             style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: AppDimensions.smallSpacing),
           Text(
-            'Start tracking your period to see personalized insights and predictions.',
+            context.tr('welcomeSubtitle'),
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
           ),
           const SizedBox(height: AppDimensions.sectionSpacing),
           Container(
@@ -279,10 +288,10 @@ class CycleStatusCard extends StatelessWidget {
                 const SizedBox(width: AppDimensions.elementSpacing),
                 Expanded(
                   child: Text(
-                    'Tap on any date in the calendar to start tracking your period.',
+                    context.tr('welcomeHint'),
                     style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.8),
-                        ),
+                      color: theme.colorScheme.onSurface.withOpacity(0.8),
+                    ),
                   ),
                 ),
               ],
@@ -292,10 +301,11 @@ class CycleStatusCard extends StatelessWidget {
       ),
     );
   }
-  
-  Widget _buildPredictionState(BuildContext context, bool isDark, DateTime prediction, int daysUntil) {
+
+  Widget _buildPredictionState(
+      BuildContext context, bool isDark, DateTime prediction, int daysUntil) {
     final theme = Theme.of(context);
-    
+
     return GestureDetector(
       onTap: onTap,
       child: ClayCard(
@@ -344,33 +354,33 @@ class CycleStatusCard extends StatelessWidget {
                             ),
                             const SizedBox(width: AppDimensions.smallSpacing),
                             Text(
-                              'Expected Soon',
+                              context.tr('expectedSoon'),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                    color: AppColors.predicted,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                color: AppColors.predicted,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: AppDimensions.smallSpacing),
                       Text(
-                        'Period Expected',
+                        context.tr('periodExpected'),
                         style: theme.textTheme.titleLarge?.copyWith(
-                              color: AppColors.predicted,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          color: AppColors.predicted,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       const SizedBox(height: AppDimensions.tinySpacing),
                       Text(
-                        daysUntil == 0 
-                            ? 'Your period is expected today'
+                        daysUntil == 0
+                            ? context.tr('periodExpectedToday')
                             : daysUntil == 1
-                                ? 'Your period is expected tomorrow'
-                                : 'In $daysUntil days',
+                                ? context.tr('periodExpectedTomorrow')
+                                : '${context.tr('In')} $daysUntil ${context.tr('days')}',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
-                            ),
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        ),
                       ),
                     ],
                   ),
@@ -402,17 +412,17 @@ class CycleStatusCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Expected Date',
+                          context.tr('expectedDate'),
                           style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurface.withOpacity(0.6),
-                              ),
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          ),
                         ),
                         const SizedBox(height: AppDimensions.tinySpacing),
                         Text(
                           DateFormat('MMMM dd, yyyy').format(prediction),
                           style: theme.textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ],
                     ),
