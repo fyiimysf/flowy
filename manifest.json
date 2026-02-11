@@ -11,7 +11,7 @@
     "prefer_related_applications": false,
     "screenshots": [
         {
-            "src": "/ss1.png",
+            "src": "/ss3.png",
             "form_factor": "narrow",
             "sizes": "1442x3202",
             "type": "image/png",
@@ -22,14 +22,14 @@
             "form_factor": "narrow",
             "sizes": "1442x3202",
             "type": "image/png",
-            "label": "fullscreen card view"
+            "label": "insights view"
         },
         {
-            "src": "/ss3.png",
+            "src": "/ss1.png",
             "form_factor": "narrow",
             "sizes": "1442x3202",
             "type": "image/png",
-            "label": "insight page"
+            "label": "settings page"
         }
     ],
     "icons": [
