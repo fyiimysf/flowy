@@ -12,7 +12,7 @@
 - 🔒 **Offline Support** — Your data stays on your device thanks to local storage with Hive DB
 
 ## 📱 Screenshots
-![Floii ScreenShots](https://github.com/fyiimysf/Floii/blob/main/Floii_screenshot.png)
+![Floii ScreenShots](https://github.com/fyiimysf/Floii/blob/main/floii-screenshot.png)
 
 ## 🛠️ Tech Stack
 
