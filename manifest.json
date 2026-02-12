@@ -2,7 +2,7 @@
     "name": "Floii",
     "short_name": "Floii",
     "start_url": ".",
-    "display_override": "minimal-ui",
+    "display_override": ["minimal-ui"],
     "display": "standalone",
     "background_color": "#1A0B2E",
     "theme_color": "#EC4899",
@@ -11,7 +11,7 @@
     "prefer_related_applications": false,
     "screenshots": [
         {
-            "src": "/ss3.png",
+            "src": "/ss1.png",
             "form_factor": "narrow",
             "sizes": "1442x3202",
             "type": "image/png",
@@ -22,14 +22,14 @@
             "form_factor": "narrow",
             "sizes": "1442x3202",
             "type": "image/png",
-            "label": "insights view"
+            "label": "fullscreen card view"
         },
         {
-            "src": "/ss1.png",
+            "src": "/ss3.png",
             "form_factor": "narrow",
             "sizes": "1442x3202",
             "type": "image/png",
-            "label": "settings page"
+            "label": "insight page"
         }
     ],
     "icons": [
