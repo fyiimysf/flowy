@@ -10,6 +10,8 @@ import 'screens/settings/settings_screen.dart';
 import 'screens/settings/help_faq_screen.dart';
 import 'screens/settings/about_screen.dart';
 import 'screens/settings/feedback_screen.dart';
+import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/onboarding/app_wrapper.dart';
 import 'services/storage/storage_service.dart';
 import 'services/localization/app_localizations.dart';
 import 'services/localization/language_service.dart';
@@ -47,7 +49,7 @@ class _FloiiAppState extends State<FloiiApp> {
     return ValueListenableBuilder<Box<Options>>(
       valueListenable: Hive.box<Options>('options').listenable(),
       builder: (context, box, _) {
-        final isDarkMode = box.get('theme')?.darkMode ?? false;
+        final isDarkMode = box.get('theme')?.darkMode ?? true;
         final theme = isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
 
         return AnimatedTheme(
@@ -85,7 +87,9 @@ class _FloiiAppState extends State<FloiiApp> {
             },
             initialRoute: '/',
             routes: {
-              '/': (context) => const HomeScreen(),
+              '/': (context) => const AppWrapper(),
+              '/home': (context) => const HomeScreen(),
+              '/onboarding': (context) => const OnboardingScreen(),
               '/insights': (context) {
                 final stats = ModalRoute.of(context)!.settings.arguments
                         as Map<String, dynamic>? ??

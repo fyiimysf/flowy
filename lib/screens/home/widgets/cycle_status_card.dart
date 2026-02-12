@@ -59,7 +59,10 @@ class CycleStatusCard extends StatelessWidget {
       periods,
       stats['average'] ?? 28,
     );
-    final currentCycleDay = CycleCalculationService.getCurrentCycleDay(periods);
+    final currentCycleDay = CycleCalculationService.getCurrentCycleDay(
+      periods,
+      averageCycleLength: stats['average'] ?? 28,
+    );
 
     return GestureDetector(
       onTap: onTap,

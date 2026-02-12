@@ -82,10 +82,13 @@ class AppLocalizations {
       'days': 'days',
       'expectedDate': 'Expected Date',
       'helpAndFaq': 'Help & FAQ',
+      'Faq': 'Frequently Asked Questions',
       'about': 'About',
       'sendFeedback': 'Send Feedback',
       'language': 'Language',
       'chooseLanguage': 'Choose your preferred language',
+      'viewOnboarding': 'View Onboarding',
+      'viewOnboardingSubtitle': 'Show the welcome tutorial again',
       'theme': 'Theme',
       'dark': 'Dark',
       'light': 'Light',
@@ -141,6 +144,36 @@ class AppLocalizations {
       'q6': 'How do I delete my data?',
       'a6':
           'Go to Settings > Danger Zone > Factory Reset to delete all your data. This action cannot be undone.',
+      'q7': 'How many previous cycles do I need for accurate predictions?',
+      'a7':
+          'For the most accurate predictions, we recommend adding at least 2-3 previous cycle dates. The more data you provide, the better our AI can understand your unique cycle patterns and provide personalized predictions.',
+      // Onboarding
+      'skip': 'Skip',
+      'next': 'Next',
+      'getStarted': 'Get Started',
+      'languageSubtitle': 'Select your preferred language to continue',
+      'onboardingWelcomeDesc':
+          'Your personal companion for understanding and tracking your menstrual cycle with precision and care.',
+      'keyFeatures': 'Key Features',
+      'featureTracking': 'Smart Tracking',
+      'featureTrackingDesc':
+          'Easily log your period dates and symptoms with just a tap',
+      'featurePrediction': 'AI Predictions',
+      'featurePredictionDesc':
+          'Get accurate predictions for your next period and fertile window',
+      'featureInsights': 'Deep Insights',
+      'featureInsightsDesc':
+          'Understand your cycle phases and patterns with detailed analytics',
+      'featurePrivacy': '100% Private',
+      'featurePrivacyDesc':
+          'Your data stays on your device. No cloud, no tracking, complete privacy',
+      'allSet': "You're All Set!",
+      'readyToStart':
+          'Start tracking your cycle and discover insights about your body.',
+      'tip1': 'Tap any date to mark your period',
+      'tip2': 'Get predictions for your next cycle',
+      'tip3': 'Your data is safe and private',
+      'tip4': 'Add 2+ previous cycles for accurate predictions',
     },
     'ar': {
       'appName': 'فلوي',
@@ -209,6 +242,8 @@ class AppLocalizations {
       'sendFeedback': 'إرسال ملاحظات',
       'language': 'اللغة',
       'chooseLanguage': 'اختر لغتك المفضلة',
+      'viewOnboarding': 'عرض الدليل',
+      'viewOnboardingSubtitle': 'إظهار البرنامج التعليمي الترحيبي مرة أخرى',
       'theme': 'المظهر',
       'dark': 'داكن',
       'light': 'فاتح',
@@ -263,6 +298,33 @@ class AppLocalizations {
       'q6': 'كيف أحذف بياناتي؟',
       'a6':
           'انتقلي إلى الإعدادات > منطقة الخطر > ضبط المصنع لحذف جميع بياناتك. لا يمكن التراجع عن هذا الإجراء.',
+      'q7': 'كم عدد الدورات السابقة التي أحتاجها للحصول على توقعات دقيقة؟',
+      'a7':
+          'للحصول على أكثر التوقعات دقة، نوصي بإضافة تاريخين إلى ثلاثة دورات سابقة على الأقل. كلما زادت البيانات التي تقدمينها، كلما كان ذكاءنا الاصطناعي قادراً بشكل أفضل على فهم أنماط دورتك الفريدة وتقديم توقعات مخصصة.',
+      // Onboarding
+      'skip': 'تخطي',
+      'next': 'التالي',
+      'getStarted': 'ابدأي',
+      'languageSubtitle': 'اختر لغتك المفضلة للمتابعة',
+      'onboardingWelcomeDesc':
+          'رفيقتك الشخصية لفهم وتتبع دورتك الشهرية بدقة وعناية.',
+      'keyFeatures': 'الميزات الرئيسية',
+      'featureTracking': 'التتبع الذكي',
+      'featureTrackingDesc': 'سجلي مواعيد دورتك وأعراضك بنقرة واحدة بسيطة',
+      'featurePrediction': 'التوقعات الذكية',
+      'featurePredictionDesc':
+          'احصلي على توقعات دقيقة لدورتك القادمة ونافذة الخصوبة',
+      'featureInsights': 'رؤى عميقة',
+      'featureInsightsDesc': 'افهمي مراحل دورتك وأنماطك مع تحليلات مفصلة',
+      'featurePrivacy': 'خصوصية 100%',
+      'featurePrivacyDesc':
+          'بياناتك تبقى على جهازك. لا سحابة، لا تتبع، خصوصية كاملة',
+      'allSet': 'أنتِ جاهزة!',
+      'readyToStart': 'ابدأي بتتبع دورتك واكتشفي رؤى عن جسمك.',
+      'tip1': 'انقري على أي تاريخ لتحديد دورتك',
+      'tip2': 'احصلي على توقعات لدورتك القادمة',
+      'tip3': 'بياناتك آمنة وخاصة',
+      'tip4': 'أضيفي دورتين سابقتين أو أكثر للحصول على توقعات دقيقة',
     },
     'ur': {
       'appName': 'فلوئی',
@@ -336,6 +398,8 @@ class AppLocalizations {
       'sendFeedback': 'رائے بھیجیں',
       'language': 'زبان',
       'chooseLanguage': 'اپنی پسندیدہ زبان منتخب کریں',
+      'viewOnboarding': 'آن بورڈنگ دیکھیں',
+      'viewOnboardingSubtitle': 'خوش آمدید ٹیوٹوریل دوبارہ دکھائیں',
       'theme': 'تھیم',
       'dark': 'تاریک',
       'light': 'روشن',
@@ -392,6 +456,36 @@ class AppLocalizations {
       'q6': 'میں اپنا ڈیٹا کیسے حذف کروں؟',
       'a6':
           'تمام ڈیٹا حذف کرنے کے لیے سیٹنگز > ڈینجر زون > فیکٹری ری سیٹ پر جائیں۔ یہ عمل ناقابل واپسی ہے۔',
+      'q7': 'درست پیشن گوئیوں کے لیے مجھے کتنے پچھلے سائیکل درکار ہیں؟',
+      'a7':
+          'سب سے درست پیشن گوئیوں کے لیے، ہم کم از کم 2-3 پچھلے سائیکل کی تاریخیں شامل کرنے کی سفارش کرتے ہیں۔ جتنا زیادہ ڈیٹا آپ فراہم کریں گے، ہمارا AI اتنا ہی بہتر طور پر آپ کے منفرد سائیکل پیٹرن کو سمجھ سکے گا اور ذاتی نوعیت کی پیشن گوئیاں فراہم کر سکے گا۔',
+      // Onboarding
+      'skip': 'چھوڑ دیں',
+      'next': 'اگلے',
+      'getStarted': 'شروع کریں',
+      'languageSubtitle': 'جاری رکھنے کے لیے اپنی پسندیدہ زبان منتخب کریں',
+      'onboardingWelcomeDesc':
+          'درستگی اور دیکھ بھال کے ساتھ اپنی ماہواری کے سائیکل کو سمجھنے اور ٹریک کرنے کے لیے آپ کا ذاتی ہم سفر۔',
+      'keyFeatures': 'اہم خصوصیات',
+      'featureTracking': 'اسمارٹ ٹریکنگ',
+      'featureTrackingDesc':
+          'صرف ایک ٹیپ کے ساتھ اپنے پیریڈ کی تاریخیں اور علامات لاگ کریں',
+      'featurePrediction': 'AI پیشن گوئیاں',
+      'featurePredictionDesc':
+          'اپنے اگلے پیریڈ اور زرخیز ونڈو کے لیے درست پیشن گوئیاں حاصل کریں',
+      'featureInsights': 'گہری بصیرت',
+      'featureInsightsDesc':
+          'تفصیلی تجزیات کے ساتھ اپنے سائیکل کے مراحل اور پیٹرن کو سمجھیں',
+      'featurePrivacy': '100% پرائیویٹ',
+      'featurePrivacyDesc':
+          'آپ کا ڈیٹا آپ کے ڈیوائس پر رہتا ہے۔ کوئی کلاؤڈ، کوئی ٹریکنگ، مکمل پرائیویسی',
+      'allSet': 'آپ تیار ہیں!',
+      'readyToStart':
+          'اپنے سائیکل کو ٹریک کرنا شروع کریں اور اپنے جسم کے بارے میں بصیرت دریافت کریں۔',
+      'tip1': 'اپنا پیریڈ نشان زد کرنے کے لیے کسی بھی تاریخ پر ٹیپ کریں',
+      'tip2': 'اپنے اگلے سائیکل کے لیے پیشن گوئیاں حاصل کریں',
+      'tip3': 'آپ کا ڈیٹا محفوظ اور نجی ہے',
+      'tip4': 'درست پیشن گوئیوں کے لیے 2+ پچھلے سائیکل شامل کریں',
     },
     'id': {
       'appName': 'Floii',
@@ -468,6 +562,8 @@ class AppLocalizations {
       'sendFeedback': 'Kirim Umpan Balik',
       'language': 'Bahasa',
       'chooseLanguage': 'Pilih bahasa pilihan Anda',
+      'viewOnboarding': 'Lihat Onboarding',
+      'viewOnboardingSubtitle': 'Tampilkan tutorial selamat datang lagi',
       'theme': 'Tema',
       'dark': 'Gelap',
       'light': 'Terang',
@@ -523,6 +619,37 @@ class AppLocalizations {
       'q6': 'Bagaimana cara menghapus data saya?',
       'a6':
           'Buka Pengaturan > Zona Bahaya > Reset Pabrik untuk menghapus semua data Anda. Tindakan ini tidak dapat dibatalkan.',
+      'q7':
+          'Berapa banyak siklus sebelumnya yang saya butuhkan untuk prediksi yang akurat?',
+      'a7':
+          'Untuk prediksi yang paling akurat, kami merekomendasikan untuk menambahkan setidaknya 2-3 tanggal siklus sebelumnya. Semakin banyak data yang Anda berikan, semakin baik AI kami dapat memahami pola siklus unik Anda dan memberikan prediksi yang dipersonalisasi.',
+      // Onboarding
+      'skip': 'Lewati',
+      'next': 'Lanjut',
+      'getStarted': 'Mulai',
+      'languageSubtitle': 'Pilih bahasa pilihan Anda untuk melanjutkan',
+      'onboardingWelcomeDesc':
+          'Teman pribadi Anda untuk memahami dan melacak siklus menstruasi dengan presisi dan perhatian.',
+      'keyFeatures': 'Fitur Utama',
+      'featureTracking': 'Pelacakan Cerdas',
+      'featureTrackingDesc':
+          'Catat tanggal haid dan gejala Anda dengan mudah hanya dengan satu ketukan',
+      'featurePrediction': 'Prediksi AI',
+      'featurePredictionDesc':
+          'Dapatkan prediksi akurat untuk haid dan masa subur berikutnya',
+      'featureInsights': 'Wawasan Mendalam',
+      'featureInsightsDesc':
+          'Pahami fase dan pola siklus Anda dengan analitik terperinci',
+      'featurePrivacy': '100% Pribadi',
+      'featurePrivacyDesc':
+          'Data Anda tetap di perangkat Anda. Tidak ada cloud, tidak ada pelacakan, privasi lengkap',
+      'allSet': 'Anda Siap!',
+      'readyToStart':
+          'Mulai lacak siklus Anda dan temukan wawasan tentang tubuh Anda.',
+      'tip1': 'Ketuk tanggal apa pun untuk menandai haid Anda',
+      'tip2': 'Dapatkan prediksi untuk siklus berikutnya',
+      'tip3': 'Data Anda aman dan pribadi',
+      'tip4': 'Tambahkan 2+ siklus sebelumnya untuk prediksi yang akurat',
     },
     'de': {
       'appName': 'Floii',
@@ -597,6 +724,8 @@ class AppLocalizations {
       'sendFeedback': 'Feedback senden',
       'language': 'Sprache',
       'chooseLanguage': 'Wählen Sie Ihre bevorzugte Sprache',
+      'viewOnboarding': 'Onboarding Anzeigen',
+      'viewOnboardingSubtitle': 'Das Willkommens-Tutorial erneut anzeigen',
       'theme': 'Thema',
       'dark': 'Dunkel',
       'light': 'Hell',
@@ -653,6 +782,37 @@ class AppLocalizations {
       'q6': 'Wie lösche ich meine Daten?',
       'a6':
           'Gehen Sie zu Einstellungen > Gefahrenzone > Werkseinstellungen, um alle Daten zu löschen. Dieser Vorgang kann nicht rückgängig gemacht werden.',
+      'q7': 'Wie viele vorherige Zyklen benötige ich für genaue Vorhersagen?',
+      'a7':
+          'Für die genauesten Vorhersagen empfehlen wir, mindestens 2-3 vorherige Zyklustermine hinzuzufügen. Je mehr Daten Sie angeben, desto besser kann unsere KI Ihre einzigartigen Zyklusmuster verstehen und personalisierte Vorhersagen treffen.',
+      // Onboarding
+      'skip': 'Überspringen',
+      'next': 'Weiter',
+      'getStarted': 'Loslegen',
+      'languageSubtitle': 'Wählen Sie Ihre bevorzugte Sprache, um fortzufahren',
+      'onboardingWelcomeDesc':
+          'Ihr persönlicher Begleiter zum Verstehen und Verfolgen Ihres Menstruationszyklus mit Präzision und Sorgfalt.',
+      'keyFeatures': 'Hauptfunktionen',
+      'featureTracking': 'Intelligentes Tracking',
+      'featureTrackingDesc':
+          'Erfassen Sie einfach Ihre Periodentermine und Symptome mit nur einem Tippen',
+      'featurePrediction': 'KI-Vorhersagen',
+      'featurePredictionDesc':
+          'Erhalten Sie genaue Vorhersagen für Ihre nächste Periode und fruchtbare Tage',
+      'featureInsights': 'Tiefe Einblicke',
+      'featureInsightsDesc':
+          'Verstehen Sie Ihre Zyklusphasen und Muster mit detaillierten Analysen',
+      'featurePrivacy': '100% Privat',
+      'featurePrivacyDesc':
+          'Ihre Daten bleiben auf Ihrem Gerät. Keine Cloud, kein Tracking, vollständige Privatsphäre',
+      'allSet': 'Sie sind bereit!',
+      'readyToStart':
+          'Beginnen Sie mit der Verfolgung Ihres Zyklus und entdecken Sie Einblicke in Ihren Körper.',
+      'tip1':
+          'Tippen Sie auf ein beliebiges Datum, um Ihre Periode zu markieren',
+      'tip2': 'Erhalten Sie Vorhersagen für Ihren nächsten Zyklus',
+      'tip3': 'Ihre Daten sind sicher und privat',
+      'tip4': 'Fügen Sie 2+ vorherige Zyklen für genaue Vorhersagen hinzu',
     },
   };
 

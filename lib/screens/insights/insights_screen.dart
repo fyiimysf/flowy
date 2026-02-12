@@ -20,9 +20,34 @@ class InsightsScreen extends StatelessWidget {
     required this.stats,
   });
 
+  /// Gets the correct prediction date for the current or predicted cycle
+  DateTime? _getCurrentPrediction(Map<String, dynamic> stats) {
+    final originalPrediction = stats['prediction'] as DateTime?;
+    if (originalPrediction == null) return null;
+
+    final periods = stats['periods'] as List<List<DateTime>>? ?? [];
+    if (periods.isEmpty) return originalPrediction;
+
+    final lastPeriodStart = periods.last.first;
+    final averageCycle = stats['average'] as int? ?? 28;
+    final now = DateTime.now();
+
+    // Check if we're past the expected cycle length
+    final daysSinceLastPeriod = now.difference(lastPeriodStart).inDays;
+
+    if (daysSinceLastPeriod <= averageCycle) {
+      // Still in the last tracked cycle, use original prediction
+      return originalPrediction;
+    }
+
+    // We're in a predicted cycle, calculate the next period date
+    final cyclesPassed = (daysSinceLastPeriod / averageCycle).ceil();
+    return lastPeriodStart.add(Duration(days: cyclesPassed * averageCycle));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final prediction = stats['prediction'] as DateTime?;
+    final prediction = _getCurrentPrediction(stats);
     final phaseName = PhaseService.getPhaseName(DateTime.now(), stats);
     final phaseColor = PhaseService.getPhaseColor(phaseName);
     final currentPhase =
@@ -31,8 +56,10 @@ class InsightsScreen extends StatelessWidget {
       stats['periods'] ?? [],
       stats['average'] ?? 28,
     );
-    final currentCycleDay =
-        CycleCalculationService.getCurrentCycleDay(stats['periods'] ?? []);
+    final currentCycleDay = CycleCalculationService.getCurrentCycleDay(
+      stats['periods'] ?? [],
+      averageCycleLength: stats['average'] ?? 28,
+    );
     final daysUntil = prediction?.difference(DateTime.now()).inDays;
 
     return Scaffold(

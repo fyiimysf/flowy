@@ -150,6 +150,7 @@ class CycleCalculationService {
   }
   
   /// Calculates cycle progress (0.0 to 1.0)
+  /// Supports predicted cycles when last tracked period has ended
   static double calculateProgress(
     List<List<DateTime>> periods,
     int averageCycleLength,
@@ -157,7 +158,15 @@ class CycleCalculationService {
     if (periods.isEmpty) return 0.0;
     
     final lastPeriodStart = periods.last.first;
-    final daysPassed = DateTime.now().difference(lastPeriodStart).inDays;
+    final now = DateTime.now();
+    final daysPassed = now.difference(lastPeriodStart).inDays;
+    
+    // If we're past the expected cycle length, calculate progress in predicted cycle
+    if (daysPassed > averageCycleLength) {
+      final daysIntoPredictedCycle = daysPassed % averageCycleLength;
+      return (daysIntoPredictedCycle / averageCycleLength).clamp(0.0, 1.0);
+    }
+    
     return (daysPassed / averageCycleLength).clamp(0.0, 1.0);
   }
   
@@ -225,10 +234,22 @@ class CycleCalculationService {
   }
   
   /// Calculates which day of cycle user is on
-  static int? getCurrentCycleDay(List<List<DateTime>> periods) {
+  /// Supports predicted cycles when last tracked period has ended
+  static int? getCurrentCycleDay(
+    List<List<DateTime>> periods, {
+    int averageCycleLength = 28,
+  }) {
     if (periods.isEmpty) return null;
-    
+
     final lastPeriodStart = periods.last.first;
-    return DateTime.now().difference(lastPeriodStart).inDays + 1;
+    final now = DateTime.now();
+    final daysPassed = now.difference(lastPeriodStart).inDays + 1;
+
+    // If we're past the expected cycle length, calculate day in predicted cycle
+    if (daysPassed > averageCycleLength) {
+      return ((daysPassed - 1) % averageCycleLength) + 1;
+    }
+
+    return daysPassed;
   }
 }

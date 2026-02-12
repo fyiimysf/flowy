@@ -42,7 +42,7 @@ class PredictionsDrawer extends StatelessWidget {
     );
 
     return Drawer(
-      width: 325,
+      width: 345,
       child: SafeArea(
         child: Column(
           children: [
@@ -343,89 +343,93 @@ class _CycleCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final phaseDetails = PhaseService.calculatePhaseDetails(cycle, stats);
 
-    return ClayCard(
-      color: isCurrent
-          ? null
-          : isDark
-              ? Colors.white.withOpacity(0.03)
-              : theme.colorScheme.surfaceContainerHighest,
-      // No custom shadows - ClayCard handles light/dark mode automatically
-      shadows: isDark || !isCurrent
-          ? []
-          : [
-              BoxShadow(
-                color: AppColors.primary.withOpacity(0.15),
-                blurRadius: 6,
-                offset: const Offset(0, 3),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: ClayCard(
+        color: isCurrent
+            ? null
+            : isDark
+                ? Colors.white.withOpacity(0.03)
+                : theme.colorScheme.surfaceContainerHighest,
+        // No custom shadows - ClayCard handles light/dark mode automatically
+        shadows: isDark || !isCurrent
+            ? []
+            : [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.15),
+                  blurRadius: 6,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            dividerColor: Colors.transparent,
+          ),
+          child: ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            leading: Container(
+              padding: const EdgeInsets.all(AppDimensions.smallSpacing),
+              decoration: BoxDecoration(
+                color: isCurrent
+                    ? AppColors.primary.withOpacity(0.15)
+                    : AppColors.predicted.withOpacity(0.15),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isCurrent ? Icons.timeline : Icons.auto_awesome,
+                color: isCurrent ? AppColors.primary : AppColors.predicted,
+                size: AppDimensions.iconMedium,
+              ),
+            ),
+            title: Text(
+              isCurrent
+                  ? '${context.tr('current')} ${context.tr('cycle')}'
+                  : '${context.tr('predicted')} ${context.tr('cycle')} ${cycle.index + 1}',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            subtitle: Text(
+              '${DateFormat('MMM dd').format(cycle.startDate)} - '
+              '${DateFormat('MMM dd').format(cycle.endDate)}',
+              style: TextStyle(
+                fontSize: AppDimensions.fontMedium,
+                color: theme.colorScheme.onSurface.withOpacity(0.5),
+              ),
+            ),
+            trailing: isCurrent && progress != null
+                ? SizedBox(
+                    width: 60,
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(AppDimensions.radiusSmall),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor:
+                            theme.colorScheme.onSurface.withOpacity(0.1),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        minHeight: 6,
+                      ),
+                    ),
+                  )
+                : null,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: AppDimensions.elementSpacing),
+                child: Column(
+                  children: [
+                    ...phaseDetails.map((phase) => PhaseRow(phase: phase)),
+                    if (isCurrent) ...[
+                      const SizedBox(height: AppDimensions.elementSpacing),
+                      _buildCycleStats(context),
+                    ],
+                  ],
+                ),
               ),
             ],
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent,
-        ),
-        child: ExpansionTile(
-          tilePadding: EdgeInsets.zero,
-          leading: Container(
-            padding: const EdgeInsets.all(AppDimensions.smallSpacing),
-            decoration: BoxDecoration(
-              color: isCurrent
-                  ? AppColors.primary.withOpacity(0.15)
-                  : AppColors.predicted.withOpacity(0.15),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              isCurrent ? Icons.timeline : Icons.auto_awesome,
-              color: isCurrent ? AppColors.primary : AppColors.predicted,
-              size: AppDimensions.iconMedium,
-            ),
           ),
-          title: Text(
-            isCurrent
-                ? '${context.tr('current')} ${context.tr('cycle')}'
-                : '${context.tr('predicted')} ${context.tr('cycle')} ${cycle.index + 1}',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          subtitle: Text(
-            '${DateFormat('MMM dd').format(cycle.startDate)} - '
-            '${DateFormat('MMM dd').format(cycle.endDate)}',
-            style: TextStyle(
-              fontSize: AppDimensions.fontMedium,
-              color: theme.colorScheme.onSurface.withOpacity(0.5),
-            ),
-          ),
-          trailing: isCurrent && progress != null
-              ? SizedBox(
-                  width: 60,
-                  child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusSmall),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      backgroundColor:
-                          theme.colorScheme.onSurface.withOpacity(0.1),
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(AppColors.primary),
-                      minHeight: 6,
-                    ),
-                  ),
-                )
-              : null,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: AppDimensions.elementSpacing),
-              child: Column(
-                children: [
-                  ...phaseDetails.map((phase) => PhaseRow(phase: phase)),
-                  if (isCurrent) ...[
-                    const SizedBox(height: AppDimensions.elementSpacing),
-                    _buildCycleStats(context),
-                  ],
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -450,8 +454,8 @@ class _CycleCard extends StatelessWidget {
             height: 30,
             color: theme.colorScheme.outline.withOpacity(0.3),
           ),
-          _buildStatItem(
-              '${context.tr('period')}', '${cycle.index} days', theme),
+          _buildStatItem('${context.tr('period')}',
+              '${stats['currentPeriodLength'] ?? 5} days', theme),
         ],
       ),
     );

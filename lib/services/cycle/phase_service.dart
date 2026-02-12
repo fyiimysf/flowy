@@ -14,6 +14,7 @@ import '../../utils/constants/colors.dart';
 class PhaseService {
   /// Determines which cycle phase a date falls into
   /// Uses actual cycle data for accurate detection
+  /// Falls back to predicted cycle when current tracked period has ended
   static CyclePhase getPhase(DateTime date, Map<String, dynamic> stats) {
     final periods = stats['periods'] as List<List<DateTime>>? ?? [];
     if (periods.isEmpty) return CyclePhase.menstrual;
@@ -25,6 +26,29 @@ class PhaseService {
     // Check if in menstrual phase (actual period)
     if (!date.isBefore(lastPeriodStart) && !date.isAfter(lastPeriodEnd)) {
       return CyclePhase.menstrual;
+    }
+
+    // Check if we should use predicted cycle instead of last tracked period
+    final prediction = stats['prediction'] as DateTime?;
+    final averageCycle = stats['average'] as int? ?? 28;
+
+    if (prediction != null && date.isAfter(lastPeriodEnd)) {
+      // Calculate how many days past the last period we are
+      final daysSinceLastPeriod = date.difference(lastPeriodStart).inDays;
+
+      // If we're past when the next period should have started, use predicted cycle
+      if (daysSinceLastPeriod >= averageCycle) {
+        // Calculate which predicted cycle we're in
+        final daysIntoPredictedCycle = daysSinceLastPeriod % averageCycle;
+        final ovulationDay = averageCycle - 14;
+
+        if (daysIntoPredictedCycle < 5) return CyclePhase.menstrual;
+        if (daysIntoPredictedCycle < ovulationDay - 1)
+          return CyclePhase.follicular;
+        if (daysIntoPredictedCycle <= ovulationDay + 1)
+          return CyclePhase.ovulation;
+        return CyclePhase.luteal;
+      }
     }
 
     // Get ovulation date from stats
@@ -116,11 +140,11 @@ class PhaseService {
       case 'Menstrual':
         return Icons.water_drop;
       case 'Follicular':
-        return Icons.spa;
+        return Icons.local_florist;
       case 'Ovulation':
         return Icons.wb_sunny;
       case 'Luteal':
-        return Icons.nights_stay;
+        return Icons.energy_savings_leaf;
       default:
         return Icons.calendar_today;
     }
@@ -142,15 +166,20 @@ class PhaseService {
     DateTime ovulationEnd;
     DateTime lutealEnd;
 
-    if (ovulationDate != null) {
-      // Use calculated ovulation date
+    // Check if this is a predicted cycle (starts in the future)
+    final now = DateTime.now();
+    final isPredictedCycle = currentCycle.startDate.isAfter(now) ||
+        currentCycle.startDate.difference(now).inDays < -averageCycle;
+
+    if (ovulationDate != null && !isPredictedCycle) {
+      // Use calculated ovulation date for current cycle
       menstrualEnd =
           currentCycle.startDate.add(Duration(days: periodLength - 1));
       ovulationStart = ovulationDate.subtract(const Duration(days: 1));
       ovulationEnd = ovulationDate.add(const Duration(days: 1));
       lutealEnd = ovulationDate.add(const Duration(days: 14));
     } else {
-      // Fallback: use approximate calculations
+      // For predicted cycles or when no ovulation date: calculate based on cycle start
       menstrualEnd =
           currentCycle.startDate.add(Duration(days: periodLength - 1));
       final ovulationDayOffset = averageCycle - 14;
@@ -161,6 +190,17 @@ class PhaseService {
       lutealEnd = currentCycle.startDate.add(Duration(days: averageCycle - 1));
     }
 
+    // Follicular phase starts on day 1 (same as menstrual) and continues until ovulation
+    // It overlaps with menstrual phase at the beginning
+    final follicularStart = currentCycle.startDate;
+    final follicularEnd = ovulationStart.subtract(const Duration(days: 1));
+    // Calculate follicular days excluding menstrual days (for display purposes)
+    // The follicular phase continues after the period ends until ovulation
+    final postMenstrualFollicularStart =
+        menstrualEnd.add(const Duration(days: 1));
+    final postMenstrualFollicularDays =
+        follicularEnd.difference(postMenstrualFollicularStart).inDays + 1;
+
     return [
       PhaseDetail(
         name: 'Menstrual',
@@ -169,8 +209,10 @@ class PhaseService {
       ),
       PhaseDetail(
         name: 'Follicular',
-        startDate: menstrualEnd.add(const Duration(days: 1)),
-        endDate: ovulationStart.subtract(const Duration(days: 1)),
+        startDate: follicularStart,
+        endDate: follicularEnd,
+        duration:
+            postMenstrualFollicularDays > 0 ? postMenstrualFollicularDays : 0,
       ),
       PhaseDetail(
         name: 'Ovulation',

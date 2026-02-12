@@ -61,6 +61,9 @@ class HelpFaqScreen extends StatelessWidget {
                     question: context.tr('q2'), answer: context.tr('a2')),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 _buildFaqItem(context,
+                    question: context.tr('q7'), answer: context.tr('a7')),
+                const SizedBox(height: AppDimensions.elementSpacing),
+                _buildFaqItem(context,
                     question: context.tr('q3'), answer: context.tr('a3')),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 _buildFaqItem(context,
@@ -71,7 +74,7 @@ class HelpFaqScreen extends StatelessWidget {
                 const SizedBox(height: AppDimensions.elementSpacing),
                 _buildFaqItem(context,
                     question: context.tr('q6'), answer: context.tr('a6')),
-                const SizedBox(height: AppDimensions.sectionSpacing * 2),
+                const SizedBox(height: AppDimensions.sectionSpacing),
                 ClayCard(
                   color: AppColors.primary.withOpacity(0.05),
                   child: Row(
@@ -137,6 +140,7 @@ class HelpFaqScreen extends StatelessWidget {
         ),
         child: ExpansionTile(
           tilePadding: EdgeInsets.zero,
+          dense: true,
           title: Text(
             question,
             style: theme.textTheme.bodyLarge?.copyWith(

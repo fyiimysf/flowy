@@ -44,7 +44,7 @@ class Options extends HiveObject {
   @HiveField(0)
   bool darkMode;
 
-  Options({this.darkMode = false});
+  Options({this.darkMode = true});
 }
 
 class OptionsAdapter extends TypeAdapter<Options> {
@@ -84,7 +84,8 @@ class PhaseDetail {
     required this.name,
     required this.startDate,
     required this.endDate,
-  }) : duration = endDate.difference(startDate).inDays + 1;
+    int? duration,
+  }) : duration = duration ?? endDate.difference(startDate).inDays + 1;
 }
 
 class PeriodRange {

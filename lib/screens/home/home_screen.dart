@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final stats = _getCycleStats();
     final periods = stats['periods'] as List<List<DateTime>>;
+    final theme = Theme.of(context);
 
     // Recalculate predictions if data was deleted externally (e.g., from settings)
     if (periods.isEmpty && _predictedPeriods.isNotEmpty) {
@@ -169,16 +170,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 onDateTap: _handleDateTap,
                 onDateLongPress: _showPeriodEditor,
               ),
-              const SizedBox(height: AppDimensions.elementSpacing * 2),
+              const SizedBox(height: AppDimensions.elementSpacing),
+              Divider(
+                height: 1,
+                indent: AppDimensions.buttonHeightSmall,
+                endIndent: AppDimensions.buttonHeightSmall,
+                color: theme.colorScheme.outline.withOpacity(0.2),
+              ),
+              const SizedBox(height: AppDimensions.elementSpacing),
               if (stats['periods'] != null &&
-                  (stats['periods'] as List).isNotEmpty &&
-                  CycleCalculationService.getCurrentCycle(stats['periods']) !=
-                      null)
-                PhaseTimeline(
-                  stats: stats,
-                  currentCycle: CycleCalculationService.getCurrentCycle(
-                      stats['periods'])!,
-                )
+                  (stats['periods'] as List).isNotEmpty)
+                Builder(builder: (context) {
+                  final cycle = _getCurrentOrPredictedCycle(stats);
+                  if (cycle == null) return _buildEmptyState();
+                  return PhaseTimeline(
+                    stats: stats,
+                    currentCycle: cycle,
+                  );
+                })
               else
                 _buildEmptyState(),
               const SizedBox(height: AppDimensions.sectionSpacing * 2),
@@ -410,6 +419,46 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _showInsights(BuildContext context, Map<String, dynamic> stats) {
     Navigator.pushNamed(context, '/insights', arguments: stats);
+  }
+
+  /// Gets the current tracked cycle or a predicted cycle if we're past the last tracked period
+  PredictedRange? _getCurrentOrPredictedCycle(Map<String, dynamic> stats) {
+    final periods = stats['periods'] as List<List<DateTime>>? ?? [];
+    if (periods.isEmpty) return null;
+
+    final lastPeriod = periods.last;
+    final averageCycle = stats['average'] as int? ?? 28;
+    final periodLength = stats['currentPeriodLength'] as int? ?? 5;
+    final lastPeriodStart = lastPeriod.first;
+    final lastPeriodEnd = lastPeriod.last;
+    final now = DateTime.now();
+
+    // Check if we're still within the last tracked cycle
+    final daysSinceLastPeriod = now.difference(lastPeriodStart).inDays;
+
+    if (daysSinceLastPeriod <= averageCycle) {
+      // Still in the last tracked cycle
+      return PredictedRange(
+        index: -1,
+        startDate: lastPeriodStart,
+        endDate: lastPeriodEnd,
+      );
+    }
+
+    // We're past the expected cycle length, calculate predicted cycle
+    final cyclesPassed = daysSinceLastPeriod ~/ averageCycle;
+    final predictedCycleStart = lastPeriodStart.add(
+      Duration(days: cyclesPassed * averageCycle),
+    );
+    final predictedCycleEnd = predictedCycleStart.add(
+      Duration(days: periodLength - 1),
+    );
+
+    return PredictedRange(
+      index: cyclesPassed - 1,
+      startDate: predictedCycleStart,
+      endDate: predictedCycleEnd,
+    );
   }
 
   Widget _buildEmptyState() {

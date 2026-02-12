@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/cycle_models.dart';
 import '../../services/storage/storage_service.dart';
 import '../../services/localization/app_localizations.dart';
@@ -26,6 +27,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _deleteAllData() async {
     await _storage.clearAllData();
 
+    // Also clear onboarding status to show it again on next launch
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('has_completed_onboarding', false);
+    await prefs.remove('onboarding_dark_mode');
+
     if (mounted) {
       setState(() {});
 
@@ -49,9 +55,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ],
           ),
-          duration: const Duration(seconds: 4),
+          duration: const Duration(seconds: 2),
         ),
       );
+
+      // Navigate to root route which will show onboarding
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+        }
+      });
     }
   }
 
@@ -282,18 +295,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            expandedHeight: 170,
+            expandedHeight: 100,
             floating: false,
             pinned: true,
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
-              title: Column(
+              title: Row(
                 mainAxisSize: MainAxisSize.min,
+                spacing: AppDimensions.tinySpacing,
                 children: [
                   Icon(
                     Icons.settings,
                     color: AppColors.primary,
-                    size: AppDimensions.iconXL,
+                    size: AppDimensions.iconLarge,
                   ),
                   const SizedBox(height: 8),
                   Text(context.tr('settings')),
@@ -319,7 +333,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Hive.box<Options>('options').listenable(),
                         builder: (context, box, _) {
                           final options =
-                              box.get('theme') ?? Options(darkMode: false);
+                              box.get('theme') ?? Options(darkMode: true);
                           return _buildSettingTile(
                             context,
                             icon: Icons.color_lens,
@@ -341,7 +355,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Divider(
                         height: 1,
                         indent: 0,
-                        color: theme.colorScheme.outline.withOpacity(0.2),
+                        color: theme.colorScheme.outline.withOpacity(0.1),
                       ),
                       _buildSettingTile(context,
                           icon: Icons.language,
@@ -351,6 +365,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               _languageService.currentLocale.languageCode),
                           onTap: _showLanguageDialog,
                           onChanged: (e) {}),
+                      Divider(
+                        height: 1,
+                        indent: 0,
+                        color: theme.colorScheme.outline.withOpacity(0.1),
+                      ),
+                      _buildSettingTile(context,
+                          icon: Icons.waving_hand,
+                          iconColor: AppColors.secondaryLight,
+                          title: context.tr('viewOnboarding'),
+                          subtitle: context.tr('viewOnboardingSubtitle'),
+                          onTap: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('has_completed_onboarding', false);
+                        if (mounted) {
+                          Navigator.of(context).pushReplacementNamed('/');
+                        }
+                      }, onChanged: (e) {}),
                     ],
                   ),
                 ),
@@ -369,11 +400,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           onTap: () =>
                               Navigator.pushNamed(context, '/help-faq'),
                           onChanged: (e) {}),
+                      const SizedBox(height: AppDimensions.elementSpacing),
                       Divider(
                         height: 1,
                         indent: 0,
-                        color: theme.colorScheme.outline.withOpacity(0.2),
+                        color: theme.colorScheme.outline.withOpacity(0.1),
                       ),
+                      const SizedBox(height: AppDimensions.elementSpacing),
                       _buildSettingTile(context,
                           icon: Icons.feedback_outlined,
                           iconColor: AppColors.ovulation,
@@ -381,11 +414,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           onTap: () =>
                               Navigator.pushNamed(context, '/feedback'),
                           onChanged: (e) {}),
+                      const SizedBox(height: AppDimensions.elementSpacing),
                       Divider(
                         height: 1,
                         indent: 0,
-                        color: theme.colorScheme.outline.withOpacity(0.2),
+                        color: theme.colorScheme.outline.withOpacity(0.1),
                       ),
+                      const SizedBox(height: AppDimensions.elementSpacing),
                       _buildSettingTile(context,
                           icon: Icons.info_outline,
                           iconColor: AppColors.secondary,
@@ -473,12 +508,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         decoration: BoxDecoration(
           color: iconColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCircular),
         ),
-        child: Icon(
-          icon,
-          color: iconColor,
-          size: AppDimensions.iconMedium,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            icon,
+            color: iconColor,
+            size: AppDimensions.iconLarge,
+          ),
         ),
       ),
       title: Text(

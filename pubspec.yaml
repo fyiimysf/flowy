@@ -1,5 +1,8 @@
 name: floi
-description: "A new Flutter project."
+screenshots:
+  path: "foii-screenshot.png"
+
+description: "An easy-to-grasp menstrual cycle tracking app that helps users monitor menstrual cycle and fertility."
 publish_to: "none"
 version: 0.1.0
 
@@ -14,7 +17,8 @@ dependencies:
   hive_flutter: ^1.1.0
   intl: 
   collection: ^1.17.0
-  shared_preferences: 
+  shared_preferences:
+  smooth_page_indicator: ^1.1.0 
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +29,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - lib/icons/

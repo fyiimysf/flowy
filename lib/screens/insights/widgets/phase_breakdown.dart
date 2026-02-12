@@ -27,7 +27,31 @@ class PhaseBreakdown extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final phases = PhaseService.calculatePhaseDetails(currentCycle, stats);
+    // Check if we should use predicted cycle instead of last tracked period
+    final averageCycle = stats['average'] as int? ?? 28;
+    final now = DateTime.now();
+    final daysSinceLastPeriod = now.difference(currentCycle.startDate).inDays;
+    
+    PredictedRange cycleToUse = currentCycle;
+    
+    // If we're past the expected cycle length, calculate which predicted cycle we're in
+    if (daysSinceLastPeriod >= averageCycle) {
+      final cyclesPassed = daysSinceLastPeriod ~/ averageCycle;
+      final predictedCycleStart = currentCycle.startDate.add(
+        Duration(days: cyclesPassed * averageCycle),
+      );
+      final predictedCycleEnd = predictedCycleStart.add(
+        Duration(days: (stats['currentPeriodLength'] as int? ?? 5) - 1),
+      );
+      
+      cycleToUse = PredictedRange(
+        index: cyclesPassed - 1,
+        startDate: predictedCycleStart,
+        endDate: predictedCycleEnd,
+      );
+    }
+
+    final phases = PhaseService.calculatePhaseDetails(cycleToUse, stats);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

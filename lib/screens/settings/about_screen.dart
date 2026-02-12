@@ -20,7 +20,7 @@ class AboutScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            expandedHeight: 100,
+            // expandedHeight: 60,
             floating: false,
             pinned: true,
             elevation: 0,
@@ -52,16 +52,20 @@ class AboutScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        padding:
-                            const EdgeInsets.all(AppDimensions.cardPadding),
+                        // padding:
+                        //     const EdgeInsets.all(AppDimensions.cardPadding),
+                        width: 100,
+                        height: 100,
                         decoration: BoxDecoration(
                           color: AppColors.primary.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.favorite,
-                          color: AppColors.primary,
-                          size: 64,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(90),
+                          child: Image.asset(
+                            'lib/icons/icon-192.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       const SizedBox(height: AppDimensions.elementSpacing),
@@ -91,7 +95,7 @@ class AboutScreen extends StatelessWidget {
                         context,
                         icon: Icons.new_releases,
                         iconColor: AppColors.primary,
-                        label: 'Version',
+                        label: context.tr('version'),
                         value: '1.0.0',
                       ),
                       Divider(
@@ -112,7 +116,7 @@ class AboutScreen extends StatelessWidget {
                 const SizedBox(height: AppDimensions.sectionSpacing),
                 // Features
                 Text(
-                  'Features',
+                  context.tr('keyFeatures'),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -124,8 +128,8 @@ class AboutScreen extends StatelessWidget {
                       _buildFeatureItem(
                         context,
                         icon: Icons.track_changes,
-                        title: 'Period Tracking',
-                        description: 'Track your menstrual cycle with ease',
+                        title: context.tr('featureTracking'),
+                        description: context.tr('featureTrackingDesc'),
                       ),
                       Divider(
                         height: 1,
@@ -135,8 +139,8 @@ class AboutScreen extends StatelessWidget {
                       _buildFeatureItem(
                         context,
                         icon: Icons.auto_awesome,
-                        title: 'Smart Predictions',
-                        description: 'AI-powered cycle predictions',
+                        title: context.tr('featurePrediction'),
+                        description: context.tr('featurePredictionDesc'),
                       ),
                       Divider(
                         height: 1,
@@ -146,8 +150,8 @@ class AboutScreen extends StatelessWidget {
                       _buildFeatureItem(
                         context,
                         icon: Icons.insights,
-                        title: 'Cycle Insights',
-                        description: 'Understand your body better',
+                        title: context.tr('featureInsights'),
+                        description: context.tr('featureInsightsDesc'),
                       ),
                       Divider(
                         height: 1,
@@ -157,8 +161,8 @@ class AboutScreen extends StatelessWidget {
                       _buildFeatureItem(
                         context,
                         icon: Icons.privacy_tip,
-                        title: 'Privacy First',
-                        description: 'Your data stays on your device',
+                        title: context.tr('featurePrivacy'),
+                        description: context.tr('featurePrivacyDesc'),
                       ),
                     ],
                   ),
@@ -178,7 +182,7 @@ class AboutScreen extends StatelessWidget {
                       _buildCreditItem(
                         context,
                         title: 'Design & Development',
-                        value: '${AppStrings.appName} Team',
+                        value: '${AppStrings.appName} Creator',
                       ),
                       Divider(
                         height: 1,
@@ -193,7 +197,7 @@ class AboutScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppDimensions.sectionSpacing * 2),
+                const SizedBox(height: AppDimensions.sectionSpacing),
                 // Copyright
                 Center(
                   child: Text(
