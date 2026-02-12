@@ -107,7 +107,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                       ),
                       const SizedBox(width: AppDimensions.smallSpacing),
                       Text(
-                        '${context.tr('period')} ${context.tr('Duration')}',
+                        '${context.tr('period')} ${context.tr('duration')}',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -202,7 +202,7 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                         ? Colors.white.withOpacity(0.05)
                         : theme.colorScheme.surfaceContainerHighest,
                     child: Text(
-                      AppStrings.cancel,
+                      context.tr('cancel'),
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
@@ -215,10 +215,10 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                   flex: 2,
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.check, size: 35),
-                    label: const Text(
-                      AppStrings.save,
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
+                    label: Text(
+                      context.tr('save'),
+                      style: const TextStyle(
+                          fontSize: 19, fontWeight: FontWeight.w700),
                     ),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
