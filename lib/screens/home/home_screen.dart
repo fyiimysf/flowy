@@ -1,5 +1,3 @@
-// lib/screens/home/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/cycle_models.dart';
@@ -43,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final stats = _getCycleStats();
     final periods = stats['periods'] as List<List<DateTime>>;
 
-    // Clear predictions if no periods exist
     if (periods.isEmpty) {
       _predictedPeriods = [];
       setState(() {});
@@ -79,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final periods = stats['periods'] as List<List<DateTime>>;
     final theme = Theme.of(context);
 
-    // Recalculate predictions if data was deleted externally (e.g., from settings)
     if (periods.isEmpty && _predictedPeriods.isNotEmpty) {
       _predictedPeriods = [];
     } else if (periods.isNotEmpty && _predictedPeriods.isEmpty) {
@@ -133,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ClayButton(
               color: Colors.transparent,
               onTap: () => Navigator.pushNamed(context, '/settings'),
-              // padding: const EdgeInsets.all(10),
               radius: AppDimensions.radiusMedium,
               child: const Icon(
                 Icons.settings_rounded,
@@ -296,7 +291,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Drag handle
               Container(
                 width: 40,
                 height: 4,
@@ -421,7 +415,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushNamed(context, '/insights', arguments: stats);
   }
 
-  /// Gets the current tracked cycle or a predicted cycle if we're past the last tracked period
   PredictedRange? _getCurrentOrPredictedCycle(Map<String, dynamic> stats) {
     final periods = stats['periods'] as List<List<DateTime>>? ?? [];
     if (periods.isEmpty) return null;
@@ -433,11 +426,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final lastPeriodEnd = lastPeriod.last;
     final now = DateTime.now();
 
-    // Check if we're still within the last tracked cycle
     final daysSinceLastPeriod = now.difference(lastPeriodStart).inDays;
 
     if (daysSinceLastPeriod <= averageCycle) {
-      // Still in the last tracked cycle
       return PredictedRange(
         index: -1,
         startDate: lastPeriodStart,
@@ -445,7 +436,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // We're past the expected cycle length, calculate predicted cycle
     final cyclesPassed = daysSinceLastPeriod ~/ averageCycle;
     final predictedCycleStart = lastPeriodStart.add(
       Duration(days: cyclesPassed * averageCycle),

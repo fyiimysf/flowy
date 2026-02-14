@@ -1,12 +1,8 @@
-// lib/theme/app_theme.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/constants/colors.dart';
 import '../utils/constants/dimensions.dart';
 
-/// Girl-friendly Flutter theme with claymorphism aesthetics
-/// Soft pinks, rounded corners, playful shadows
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
@@ -14,8 +10,7 @@ class AppTheme {
       brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.backgroundLight,
       primarySwatch: _createMaterialColor(AppColors.primary),
-      fontFamily: 'Nunito', // Rounded, friendly font
-
+      fontFamily: 'Nunito',
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         secondary: AppColors.secondary,
@@ -24,7 +19,6 @@ class AppTheme {
         onSecondary: Colors.white,
         onSurface: AppColors.textPrimary,
       ),
-
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
@@ -42,9 +36,8 @@ class AppTheme {
           statusBarIconBrightness: Brightness.dark,
         ),
       ),
-
       cardTheme: CardThemeData(
-        elevation: 0, // Claymorphism uses custom shadows
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
           side: BorderSide(
@@ -56,7 +49,6 @@ class AppTheme {
         shadowColor: AppColors.shadow,
         surfaceTintColor: Colors.transparent,
       ),
-
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
@@ -76,7 +68,6 @@ class AppTheme {
           ),
         ),
       ),
-
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
@@ -90,7 +81,6 @@ class AppTheme {
           ),
         ),
       ),
-
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
@@ -103,7 +93,6 @@ class AppTheme {
           ),
         ),
       ),
-
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
@@ -112,7 +101,6 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
         ),
       ),
-
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surfaceLight,
@@ -150,7 +138,6 @@ class AppTheme {
           fontSize: AppDimensions.fontMedium,
         ),
       ),
-
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surfaceLight,
         selectedColor: AppColors.primaryLight,
@@ -166,7 +153,6 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusCircular),
         ),
       ),
-
       sliderTheme: SliderThemeData(
         activeTrackColor: AppColors.primary,
         inactiveTrackColor: AppColors.clayShadow,
@@ -178,7 +164,6 @@ class AppTheme {
           elevation: 4,
         ),
       ),
-
       switchTheme: SwitchThemeData(
         thumbColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.selected)) {
@@ -194,7 +179,6 @@ class AppTheme {
         }),
         trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
       ),
-
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.cardLight,
         selectedItemColor: AppColors.primary,
@@ -202,7 +186,6 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
-
       drawerTheme: const DrawerThemeData(
         backgroundColor: AppColors.cardLight,
         elevation: 8,
@@ -213,7 +196,6 @@ class AppTheme {
           ),
         ),
       ),
-
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.cardLight,
         elevation: AppDimensions.cardElevation,
@@ -221,7 +203,6 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
         ),
       ),
-
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.cardLight,
         elevation: AppDimensions.cardElevation,
@@ -231,7 +212,6 @@ class AppTheme {
           ),
         ),
       ),
-
       textTheme: const TextTheme(
         displayLarge: TextStyle(
           fontSize: AppDimensions.fontDisplay,
@@ -420,7 +400,6 @@ class AppTheme {
     );
   }
 
-  /// Create a MaterialColor swatch from a primary color
   static MaterialColor _createMaterialColor(Color color) {
     List<double> strengths = <double>[.05, .1, .2, .3, .4, .5, .6, .7, .8, .9];
     Map<int, Color> swatch = {};

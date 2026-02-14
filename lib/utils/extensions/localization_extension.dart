@@ -1,5 +1,3 @@
-// lib/utils/extensions/localization_extension.dart
-
 import 'package:flutter/material.dart';
 import '../../services/localization/app_localizations.dart';
 

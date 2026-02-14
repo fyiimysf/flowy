@@ -1,5 +1,3 @@
-// lib/widgets/drawers/predictions_drawer.dart
-
 import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -134,7 +132,6 @@ class PredictionsDrawer extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Decorative circles
           Positioned(
             right: -40,
             top: -40,
@@ -159,7 +156,6 @@ class PredictionsDrawer extends StatelessWidget {
               ),
             ),
           ),
-          // Content
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -351,7 +347,6 @@ class _CycleCard extends StatelessWidget {
             : isDark
                 ? Colors.white.withOpacity(0.03)
                 : theme.colorScheme.surfaceContainerHighest,
-        // No custom shadows - ClayCard handles light/dark mode automatically
         shadows: isDark || !isCurrent
             ? []
             : [

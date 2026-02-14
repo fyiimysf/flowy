@@ -1,5 +1,3 @@
-// lib/screens/settings/feedback_screen.dart
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -45,7 +43,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
     setState(() => _isSubmitting = true);
 
-    // Simulate API call
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
@@ -136,7 +133,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Category Selection
                         Text(
                           'Category',
                           style: theme.textTheme.bodyLarge?.copyWith(
@@ -184,7 +180,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           }).toList(),
                         ),
                         const SizedBox(height: AppDimensions.elementSpacing),
-                        // Name Field
                         TextFormField(
                           controller: _nameController,
                           decoration: InputDecoration(
@@ -201,7 +196,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           ),
                         ),
                         const SizedBox(height: AppDimensions.elementSpacing),
-                        // Email Field
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -219,7 +213,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           ),
                         ),
                         const SizedBox(height: AppDimensions.elementSpacing),
-                        // Feedback Field
                         TextFormField(
                           controller: _feedbackController,
                           maxLines: 5,
@@ -247,7 +240,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           ),
                         ),
                         const SizedBox(height: AppDimensions.sectionSpacing),
-                        // Submit Button
                         SizedBox(
                           width: double.infinity,
                           height: 50,

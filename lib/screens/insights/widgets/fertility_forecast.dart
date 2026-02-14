@@ -1,5 +1,3 @@
-// lib/screens/insights/widgets/fertility_forecast.dart
-
 import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../services/cycle/prediction_service.dart';

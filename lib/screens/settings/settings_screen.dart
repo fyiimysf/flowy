@@ -1,5 +1,3 @@
-// lib/screens/settings/settings_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +25,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _deleteAllData() async {
     await _storage.clearAllData();
 
-    // Also clear onboarding status to show it again on next launch
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('has_completed_onboarding', false);
     await prefs.remove('onboarding_dark_mode');
@@ -59,7 +56,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       );
 
-      // Navigate to root route which will show onboarding
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
           Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
@@ -173,7 +169,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Drag handle
               Container(
                 width: 40,
                 height: 4,
@@ -322,7 +317,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 const SizedBox(height: AppDimensions.sectionSpacing * 2),
-                // General section
                 _buildSectionHeader(context, context.tr('general'), Icons.tune),
                 const SizedBox(height: AppDimensions.elementSpacing),
                 ClayCard(
@@ -386,7 +380,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // Support section
                 _buildSectionHeader(
                     context, context.tr('support'), Icons.support),
                 const SizedBox(height: AppDimensions.elementSpacing),
@@ -431,7 +424,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // Danger zone
                 _buildSectionHeader(
                     context, context.tr('dangerZone'), Icons.warning_amber,
                     color: AppColors.error),
@@ -448,7 +440,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onChanged: (e) {}),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing * 2),
-                // Version
                 Center(
                   child: Text(
                     '${context.tr('version')} 1.0.0',

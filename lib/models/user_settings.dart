@@ -1,10 +1,4 @@
-// lib/models/user_settings.dart
-
 import 'package:hive_flutter/hive_flutter.dart';
-
-// Note: This file uses Hive without code generation (for simplicity)
-// If you want code generation, uncomment the line below and run: flutter packages pub run build_runner build
-// part 'user_settings.g.dart';
 
 @HiveType(typeId: 2)
 class UserSettings extends HiveObject {
@@ -28,7 +22,6 @@ class UserSettings extends HiveObject {
   });
 }
 
-/// Manual adapter for UserSettings (no code generation required)
 class UserSettingsAdapter extends TypeAdapter<UserSettings> {
   @override
   final int typeId = 2;

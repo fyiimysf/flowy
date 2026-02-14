@@ -1,5 +1,3 @@
-// lib/screens/home/dialogs/period_editor_dialog.dart
-
 import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +61,6 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Drag handle
           Container(
             width: 40,
             height: 4,
@@ -135,7 +132,6 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                 horizontal: AppDimensions.elementSpacing,
                 vertical: AppDimensions.smallSpacing,
               ),
-              // No custom shadows - ClayCard handles light/dark mode automatically
               child: Text(
                 '${DateFormat('MMM dd').format(startDate)} - '
                 '${DateFormat('MMM dd').format(startDate.addDays(menstrualDays - 1))}',
@@ -189,7 +185,6 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
               return GestureDetector(
                 onTap: () => _toggleDay(date),
                 child: Container(
-                  // Removed AnimatedContainer to prevent theme switch flash
                   margin: const EdgeInsets.all(
                       AppDimensions.calendarDaySpacing * 2),
                   decoration: BoxDecoration(
@@ -314,7 +309,6 @@ class _PeriodEditorDialogState extends State<PeriodEditorDialog> {
                   });
                 },
                 child: Container(
-                  // Removed AnimatedContainer to prevent theme switch flash
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppDimensions.elementSpacing,
                     vertical: AppDimensions.smallSpacing,

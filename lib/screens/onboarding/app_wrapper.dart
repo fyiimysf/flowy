@@ -1,5 +1,3 @@
-// lib/screens/onboarding/app_wrapper.dart
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../screens/home/home_screen.dart';

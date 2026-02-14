@@ -1,5 +1,3 @@
-// lib/screens/home/widgets/cycle_status_card.dart
-
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:intl/intl.dart';
 import '../../../services/cycle/cycle_calculation_service.dart';
@@ -29,13 +27,10 @@ class CycleStatusCard extends StatelessWidget {
     final prediction = stats['prediction'] as DateTime?;
     final total = stats['average'] ?? 28;
 
-    // Check if we have no data
     if (periods.isEmpty) {
       return _buildEmptyState(context, isDark);
     }
 
-    // Check if we're near a prediction date (within 7 days)
-    // Normalize dates to compare without time components
     final today = DateTime.now();
     final todayDate = DateTime(today.year, today.month, today.day);
     final daysUntil = prediction != null
@@ -50,7 +45,6 @@ class CycleStatusCard extends StatelessWidget {
       return _buildPredictionState(context, isDark, prediction, daysUntil);
     }
 
-    // Normal cycle state
     final currentPhase =
         PhaseService.getPhaseDisplay(DateTime.now(), stats, context);
     final phaseName = PhaseService.getPhaseName(DateTime.now(), stats);
@@ -68,13 +62,10 @@ class CycleStatusCard extends StatelessWidget {
       onTap: onTap,
       child: ClayCard(
         padding: const EdgeInsets.all(AppDimensions.cardPadding),
-        // No custom shadows - ClayCard handles light/dark mode automatically
         child: Column(
           children: [
-            // Progress circle with phase info
             Row(
               children: [
-                // Circular progress
                 ProgressIndicator(
                   value: progress,
                   size: 80,
@@ -83,7 +74,6 @@ class CycleStatusCard extends StatelessWidget {
                   showPercentage: true,
                 ),
                 const SizedBox(width: AppDimensions.elementSpacing * 2),
-                // Phase info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +130,6 @@ class CycleStatusCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppDimensions.smallSpacing * 3),
-            // Phase description
             Container(
               padding: const EdgeInsets.all(AppDimensions.elementSpacing),
               decoration: BoxDecoration(
@@ -171,7 +160,6 @@ class CycleStatusCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppDimensions.smallSpacing),
-            // Next period info
             if (prediction != null)
               Container(
                 padding: const EdgeInsets.all(AppDimensions.elementSpacing),
@@ -317,7 +305,6 @@ class CycleStatusCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                // Warning indicator
                 Container(
                   width: 100,
                   height: 100,
@@ -332,7 +319,6 @@ class CycleStatusCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppDimensions.elementSpacing * 2),
-                // Prediction info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,7 +377,6 @@ class CycleStatusCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppDimensions.sectionSpacing),
-            // Prediction details
             Container(
               padding: const EdgeInsets.all(AppDimensions.elementSpacing),
               decoration: BoxDecoration(

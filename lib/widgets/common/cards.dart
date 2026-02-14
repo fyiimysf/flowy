@@ -1,12 +1,7 @@
-// lib/widgets/common/cards.dart
-
 import 'package:flutter/material.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';
 
-/// Claymorphism card with soft shadows and rounded corners
-/// Creates that soft, toy-like 3D effect perfect for feminine UI
-/// Now theme-aware - adapts to light/dark mode
 class ClayCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
@@ -30,12 +25,10 @@ class ClayCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
 
-    // Theme-aware shadows: NO shadows in dark mode, minimal in light for performance
     final clayShadows = shadows ??
         (isDark
-            ? [] // No shadows in dark mode - clean flat design
+            ? []
             : [
-                // Light mode: single subtle shadow for performance
                 BoxShadow(
                   color: AppColors.clayShadow.withOpacity(0.15),
                   blurRadius: 6,
@@ -71,7 +64,6 @@ class ClayCard extends StatelessWidget {
   }
 }
 
-/// Metric card with claymorphism styling
 class MetricCard extends StatelessWidget {
   final String title;
   final String value;
@@ -142,7 +134,6 @@ class MetricCard extends StatelessWidget {
   }
 }
 
-/// Stat card with subtle claymorphism
 class StatCard extends StatelessWidget {
   final String title;
   final String value;
@@ -166,7 +157,7 @@ class StatCard extends StatelessWidget {
       color: backgroundColor ?? theme.colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.all(AppDimensions.elementSpacing),
       shadows: isDark
-          ? [] // No shadows in dark mode
+          ? []
           : [
               BoxShadow(
                 color: AppColors.shadow.withOpacity(0.08),
@@ -212,7 +203,6 @@ class StatCard extends StatelessWidget {
   }
 }
 
-/// Info card with prominent claymorphism
 class InfoCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
@@ -235,13 +225,11 @@ class InfoCard extends StatelessWidget {
     return ClayCard(
       padding: padding ?? const EdgeInsets.all(AppDimensions.cardPadding),
       color: backgroundColor ?? theme.colorScheme.surface,
-      // Use default ClayCard shadows for consistency and performance
       child: child,
     );
   }
 }
 
-/// Pressable clay button with animated feedback
 class ClayButton extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
@@ -270,12 +258,9 @@ class _ClayButtonState extends State<ClayButton> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
 
-    // NO animated container - use regular Container to prevent flash
-    // during theme transitions
-    // Minimal shadows for performance in light mode
     final shadows = _isPressed
         ? (isDark
-            ? [] // No pressed shadows in dark
+            ? []
             : [
                 BoxShadow(
                     color: AppColors.clayShadow.withOpacity(0.2),
@@ -284,7 +269,7 @@ class _ClayButtonState extends State<ClayButton> {
                     spreadRadius: -1),
               ])
         : (isDark
-            ? [] // No shadows in dark mode at all
+            ? []
             : [
                 BoxShadow(
                   color: AppColors.clayShadow.withOpacity(0.12),
@@ -299,7 +284,6 @@ class _ClayButtonState extends State<ClayButton> {
       onTapCancel: () => setState(() => _isPressed = false),
       onTap: widget.onTap,
       child: Container(
-        // Removed AnimatedContainer to prevent color flash during theme switch
         padding: widget.padding ??
             const EdgeInsets.symmetric(
               horizontal: AppDimensions.cardPadding,

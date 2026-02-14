@@ -1,5 +1,3 @@
-// lib/screens/onboarding/onboarding_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -187,7 +185,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 ],
               ),
             ),
-            Padding(
+            Container(
+              color: Colors.transparent,
               padding: const EdgeInsets.all(AppDimensions.screenPadding),
               child: Column(
                 children: [
@@ -195,66 +194,64 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     controller: _pageController,
                     count: 3,
                     effect: WormEffect(
-                      dotWidth: 10,
-                      dotHeight: 10,
-                      spacing: 8,
+                      dotWidth: 100,
+                      dotHeight: 05,
+                      spacing: 10,
                       dotColor: _isDarkMode
                           ? Colors.white.withOpacity(0.3)
                           : Colors.black.withOpacity(0.2),
                       activeDotColor: AppColors.primary,
                     ),
                   ),
-                  const SizedBox(height: AppDimensions.elementSpacing * 2),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 62,
-                    child: ElevatedButton(
-                      onPressed: _nextPage,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusLarge,
-                          ),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        _currentPage == 2
-                            ? (AppLocalizations.of(context)
-                                    ?.translate('getStarted') ??
-                                'Get Started')
-                            : (AppLocalizations.of(context)
-                                    ?.translate('next') ??
-                                'Next'),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppDimensions.elementSpacing),
                   if (_currentPage < 2)
-                    TextButton(
-                      key: const ValueKey('skip_button'),
-                      onPressed: _completeOnboarding,
-                      child: Text(
-                        AppLocalizations.of(context)?.translate('skip') ??
-                            'Skip',
-                        style: TextStyle(
-                          color:
-                              _isDarkMode ? Colors.white70 : AppColors.primary,
-                          fontWeight: FontWeight.w600,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        key: const ValueKey('skip_button'),
+                        onPressed: _completeOnboarding,
+                        child: Text(
+                          AppLocalizations.of(context)?.translate('skip') ??
+                              'Skip',
+                          style: TextStyle(
+                            color: _isDarkMode
+                                ? Colors.white70
+                                : AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     )
                   else
-                    const SizedBox(
-                      key: ValueKey('skip_spacer'),
-                      height: 32,
+                    SizedBox(
+                      height: 48,
                     ),
+                  ElevatedButton(
+                    onPressed: _nextPage,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 60),
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppDimensions.radiusLarge,
+                        ),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      _currentPage == 2
+                          ? (AppLocalizations.of(context)
+                                  ?.translate('getStarted') ??
+                              'Get Started')
+                          : (AppLocalizations.of(context)?.translate('next') ??
+                              'Next'),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppDimensions.elementSpacing),
                 ],
               ),
             ),
@@ -270,77 +267,95 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 160,
-              height: 160,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        AppColors.period.withOpacity(_isDarkMode ? 0.4 : 0.3),
-                    blurRadius: 40,
-                    offset: const Offset(0, 20),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.screenPadding, vertical: 10),
+        child: LayoutBuilder(
+          builder: (context, constr) => ListView(
+            children: [
+              Container(
+                constraints: BoxConstraints(minHeight: constr.maxHeight),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Center(
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.period
+                                      .withOpacity(_isDarkMode ? 0.4 : 0.3),
+                                  blurRadius: 40,
+                                  offset: const Offset(0, 20),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image.asset(
+                                'lib/icons/icon-512.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          localizations?.translate('appName') ?? 'Floii',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                            fontSize: 42,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppDimensions.smallSpacing),
+                      Text(
+                        localizations?.translate('appTagline') ??
+                            'Track your cycle with ease',
+                        style: TextStyle(
+                          color: _textSecondaryColor,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: AppDimensions.sectionSpacing),
+                      Container(
+                        padding:
+                            const EdgeInsets.all(AppDimensions.cardPadding),
+                        decoration: BoxDecoration(
+                          color: _isDarkMode
+                              ? Colors.white.withOpacity(0.05)
+                              : AppColors.primary.withOpacity(0.05),
+                          borderRadius:
+                              BorderRadius.circular(AppDimensions.radiusLarge),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.1),
+                            width: 0,
+                          ),
+                        ),
+                        child: Text(
+                          localizations?.translate('onboardingWelcomeDesc') ??
+                              'Your personal companion for understanding and tracking your menstrual cycle with precision and care.',
+                          style: TextStyle(
+                            height: 1.6,
+                            color: _textColor,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: Image.asset(
-                  'lib/icons/icon-512.png',
-                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-            const SizedBox(height: AppDimensions.sectionSpacing * 1.5),
-            Text(
-              localizations?.translate('appName') ?? 'Floii',
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                color: AppColors.primary,
-                fontSize: 42,
-              ),
-            ),
-            const SizedBox(height: AppDimensions.smallSpacing),
-            Text(
-              localizations?.translate('appTagline') ??
-                  'Track your cycle with ease',
-              style: TextStyle(
-                color: _textSecondaryColor,
-                fontSize: 18,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppDimensions.sectionSpacing),
-            Container(
-              padding: const EdgeInsets.all(AppDimensions.cardPadding),
-              decoration: BoxDecoration(
-                color: _isDarkMode
-                    ? Colors.white.withOpacity(0.05)
-                    : AppColors.primary.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
-                border: Border.all(
-                  color: AppColors.primary.withOpacity(0.1),
-                  width: 0,
-                ),
-              ),
-              child: Text(
-                localizations?.translate('onboardingWelcomeDesc') ??
-                    'Your personal companion for understanding and tracking your menstrual cycle with precision and care.',
-                style: TextStyle(
-                  height: 1.6,
-                  color: _textColor,
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -385,77 +400,90 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     return Padding(
       padding:
           const EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            localizations?.translate('keyFeatures') ?? 'Key Features',
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              color: _textColor,
-              fontSize: 24,
-            ),
-          ),
-          const SizedBox(height: AppDimensions.sectionSpacing),
-          ...features.map((feature) {
-            return Padding(
-              padding:
-                  const EdgeInsets.only(bottom: AppDimensions.elementSpacing),
-              child: Container(
-                padding: const EdgeInsets.all(AppDimensions.elementSpacing),
-                decoration: BoxDecoration(
-                  color: _isDarkMode
-                      ? Colors.white.withOpacity(0.05)
-                      : Colors.grey.shade50,
-                  borderRadius:
-                      BorderRadius.circular(AppDimensions.radiusMedium),
-                ),
-                child: Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) => ListView(
+          children: [
+            Container(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Center(
+                child: Column(
                   children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: (feature['color'] as Color).withOpacity(0.15),
-                        borderRadius:
-                            BorderRadius.circular(AppDimensions.radiusMedium),
-                      ),
-                      child: Icon(
-                        feature['icon'] as IconData,
-                        color: feature['color'] as Color,
-                        size: 28,
+                    Text(
+                      localizations?.translate('keyFeatures') ?? 'Key Features',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: _textColor,
+                        fontSize: 24,
                       ),
                     ),
-                    const SizedBox(width: AppDimensions.elementSpacing),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            feature['title'] as String,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: feature['color'] as Color,
-                            ),
+                    const SizedBox(height: AppDimensions.sectionSpacing),
+                    ...features.map((feature) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: AppDimensions.elementSpacing),
+                        child: Container(
+                          padding: const EdgeInsets.all(
+                              AppDimensions.elementSpacing),
+                          decoration: BoxDecoration(
+                            color: _isDarkMode
+                                ? Colors.white.withOpacity(0.05)
+                                : Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusMedium),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            feature['desc'] as String,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: _textSecondaryColor,
-                            ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 56,
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  color: (feature['color'] as Color)
+                                      .withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(
+                                      AppDimensions.radiusMedium),
+                                ),
+                                child: Icon(
+                                  feature['icon'] as IconData,
+                                  color: feature['color'] as Color,
+                                  size: 28,
+                                ),
+                              ),
+                              const SizedBox(
+                                  width: AppDimensions.elementSpacing),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      feature['title'] as String,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: feature['color'] as Color,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      feature['desc'] as String,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: _textSecondaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    }).toList(),
                   ],
                 ),
               ),
-            );
-          }).toList(),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -466,94 +494,103 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     return Padding(
       padding:
           const EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.purple.withOpacity(_isDarkMode ? 0.4 : 0.3),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
+      child: LayoutBuilder(
+        builder: (conx, conr) => ListView(
+          children: [
+            Container(
+              constraints: BoxConstraints(minHeight: conr.maxHeight),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.purple
+                                .withOpacity(_isDarkMode ? 0.4 : 0.3),
+                            blurRadius: 30,
+                            offset: const Offset(0, 15),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image.asset(
+                          'lib/icons/icon-512.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppDimensions.sectionSpacing * 1.5),
+                    Text(
+                      localizations?.translate('allSet') ?? "You're All Set!",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: _textColor,
+                        fontSize: 24,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppDimensions.elementSpacing),
+                    Text(
+                      localizations?.translate('readyToStart') ??
+                          'Start tracking your cycle and discover insights about your body.',
+                      style: TextStyle(
+                        color: _textSecondaryColor,
+                        height: 1.6,
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppDimensions.sectionSpacing),
+                    Container(
+                      padding: const EdgeInsets.all(AppDimensions.cardPadding),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primary.withOpacity(0.1),
+                            AppColors.lilac.withOpacity(0.1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(AppDimensions.radiusLarge),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildTipItem(
+                              Icons.touch_app,
+                              localizations?.translate('tip1') ??
+                                  'Tap any date to mark your period'),
+                          const SizedBox(height: AppDimensions.elementSpacing),
+                          _buildTipItem(
+                              Icons.notifications_active,
+                              localizations?.translate('tip2') ??
+                                  'Get predictions for your next cycle'),
+                          const SizedBox(height: AppDimensions.elementSpacing),
+                          _buildTipItem(
+                              Icons.security,
+                              localizations?.translate('tip3') ??
+                                  'Your data is safe and private'),
+                          const SizedBox(height: AppDimensions.elementSpacing),
+                          _buildTipItem(
+                              Icons.history,
+                              localizations?.translate('tip4') ??
+                                  'Add 2+ previous cycles for accurate predictions'),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Image.asset(
-                'lib/icons/icon-512.png',
-                fit: BoxFit.cover,
               ),
             ),
-          ),
-          const SizedBox(height: AppDimensions.sectionSpacing * 1.5),
-          Text(
-            localizations?.translate('allSet') ?? "You're All Set!",
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              color: _textColor,
-              fontSize: 24,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppDimensions.elementSpacing),
-          Text(
-            localizations?.translate('readyToStart') ??
-                'Start tracking your cycle and discover insights about your body.',
-            style: TextStyle(
-              color: _textSecondaryColor,
-              height: 1.6,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppDimensions.sectionSpacing),
-          Container(
-            padding: const EdgeInsets.all(AppDimensions.cardPadding),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primary.withOpacity(0.1),
-                  AppColors.lilac.withOpacity(0.1),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
-              // border: Border.all(
-              //   color: AppColors.primary.withOpacity(0),
-              //   width: 0,
-              // ),
-            ),
-            child: Column(
-              children: [
-                _buildTipItem(
-                    Icons.touch_app,
-                    localizations?.translate('tip1') ??
-                        'Tap any date to mark your period'),
-                const SizedBox(height: AppDimensions.elementSpacing),
-                _buildTipItem(
-                    Icons.notifications_active,
-                    localizations?.translate('tip2') ??
-                        'Get predictions for your next cycle'),
-                const SizedBox(height: AppDimensions.elementSpacing),
-                _buildTipItem(
-                    Icons.security,
-                    localizations?.translate('tip3') ??
-                        'Your data is safe and private'),
-                const SizedBox(height: AppDimensions.elementSpacing),
-                _buildTipItem(
-                    Icons.history,
-                    localizations?.translate('tip4') ??
-                        'Add 2+ previous cycles for accurate predictions'),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

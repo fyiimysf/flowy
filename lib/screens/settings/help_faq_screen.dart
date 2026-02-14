@@ -1,5 +1,3 @@
-// lib/screens/settings/help_faq_screen.dart
-
 import 'package:flutter/material.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';

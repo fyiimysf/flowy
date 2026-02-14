@@ -1,5 +1,3 @@
-// lib/utils/extensions/color_extensions.dart
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';

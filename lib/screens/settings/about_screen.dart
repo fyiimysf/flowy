@@ -1,5 +1,3 @@
-// lib/screens/settings/about_screen.dart
-
 import 'package:flutter/material.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';
@@ -20,7 +18,6 @@ class AboutScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            // expandedHeight: 60,
             floating: false,
             pinned: true,
             elevation: 0,
@@ -29,11 +26,6 @@ class AboutScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: AppDimensions.tinySpacing,
                 children: [
-                  // Icon(
-                  //   Icons.info_outline,
-                  //   color: AppColors.secondary,
-                  //   size: AppDimensions.iconLarge,
-                  // ),
                   const SizedBox(height: 8),
                   Text(context.tr('about')),
                 ],
@@ -47,13 +39,10 @@ class AboutScreen extends StatelessWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // App Logo and Name
                 Center(
                   child: Column(
                     children: [
                       Container(
-                        // padding:
-                        //     const EdgeInsets.all(AppDimensions.cardPadding),
                         width: 100,
                         height: 100,
                         decoration: BoxDecoration(
@@ -87,7 +76,6 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing * 2),
-                // Version Info
                 ClayCard(
                   child: Column(
                     children: [
@@ -114,7 +102,6 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // Features
                 Text(
                   context.tr('keyFeatures'),
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -168,7 +155,6 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // Credits
                 Text(
                   'Credits',
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -198,7 +184,6 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // Copyright
                 Center(
                   child: Text(
                     '© 2026 ${AppStrings.appName}. All rights reserved.',

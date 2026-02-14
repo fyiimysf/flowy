@@ -1,5 +1,3 @@
-// lib/screens/home/widgets/calendar_widget.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../models/cycle_models.dart';
@@ -33,17 +31,15 @@ class CalendarWidget extends StatelessWidget {
     final firstDay = DateTime(currentMonth.year, currentMonth.month, 1);
     final lastDay = DateTime(currentMonth.year, currentMonth.month + 1, 0);
     final daysInMonth = lastDay.day;
-    // Sunday-based offset: 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
     final sundayBasedOffset = firstDay.weekday % 7;
     final totalWeeks = ((daysInMonth + sundayBasedOffset) / 7).ceil();
     final totalCells = totalWeeks * 7;
     final isDark = theme.brightness == Brightness.dark;
     return ClayCard(
       padding: const EdgeInsets.all(AppDimensions.elementSpacing),
-      // No custom shadows - ClayCard handles light/dark mode automatically
       child: Column(
         children: [
-          // Weekday headers - aligned with calendar grid starting from Sunday
           Container(
             padding: const EdgeInsets.all(AppDimensions.elementSpacing),
             decoration: BoxDecoration(
@@ -54,20 +50,19 @@ class CalendarWidget extends StatelessWidget {
             ),
             child: LayoutBuilder(builder: (context, constraints) {
               final cellWidth = constraints.maxWidth / 7;
-              // Generate weekday abbreviations starting from Sunday (index 0 in grid)
+
               final now = DateTime.now();
-              // Find the most recent Sunday
+
               final sunday = now.subtract(Duration(days: now.weekday % 7));
               final weekdays = List.generate(7, (index) {
                 final day = sunday.add(Duration(days: index));
-                return DateFormat.E()
-                    .format(day)[0]; // First letter of weekday name
+                return DateFormat.E().format(day)[0];
               });
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: weekdays.map((day) {
                   return SizedBox(
-                    width: cellWidth - 8, // Account for margins
+                    width: cellWidth - 8,
                     child: Text(
                       day,
                       textAlign: TextAlign.center,
@@ -82,7 +77,6 @@ class CalendarWidget extends StatelessWidget {
             }),
           ),
           const SizedBox(height: 4),
-          // Calendar grid
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -113,8 +107,6 @@ class CalendarWidget extends StatelessWidget {
           ),
           const SizedBox(height: AppDimensions.elementSpacing),
           _buildLegend(context),
-
-          // Legend
         ],
       ),
     );
@@ -126,9 +118,6 @@ class CalendarWidget extends StatelessWidget {
     int daysInMonth,
     int weekdayOffset,
   ) {
-    // weekdayOffset is 0-6 where 0 = Sunday, 6 = Saturday
-    // DateTime.weekday is 1-7 where 1 = Monday, 7 = Sunday
-    // Convert to Sunday-based: Sunday should be 0, Monday 1, etc.
     final sundayBasedOffset = (firstDay.weekday % 7);
 
     if (index < sundayBasedOffset) {
@@ -218,7 +207,6 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
         ovulationDate != null && ovulationDate.isSameDate(widget.date);
     final isPeriod = dailyData?.isPeriod ?? false;
 
-    // Calculate follicular phase (after period ends, before fertile window)
     final isFollicular =
         _isInFollicularPhase(widget.date, widget.stats, fertileDates);
 
@@ -351,11 +339,10 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
 
   List<BoxShadow> _getShadow(bool isPeriod, bool isOvulation, bool isFertile,
       bool isFollicular, bool isToday, bool isDark) {
-    // No shadows in dark mode - clean flat design
     if (isDark) {
       return [];
     }
-    // Light mode: minimal shadows for performance
+
     if (isPeriod || isToday) {
       return [
         BoxShadow(
@@ -366,7 +353,7 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
         ),
       ];
     }
-    // Light mode: single subtle shadow
+
     return [
       BoxShadow(
         color: AppColors.clayShadow.withOpacity(0.1),
@@ -387,12 +374,10 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
     return theme.colorScheme.onSurface;
   }
 
-  /// Checks if a date falls within the follicular phase (after period, before fertile window)
   bool _isInFollicularPhase(
       DateTime date, Map<String, dynamic> stats, List<DateTime> fertileDates) {
     if (fertileDates.isEmpty) return false;
 
-    // Get the last period info
     final periods = stats['periods'] as List<List<DateTime>>? ?? [];
     if (periods.isEmpty) return false;
 
@@ -401,13 +386,11 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
     final averageCycle = stats['average'] as int? ?? 28;
     final now = DateTime.now();
 
-    // Check if we're in a predicted cycle (past last tracked period)
     final daysSinceLastPeriod = now.difference(lastPeriod.first).inDays;
     DateTime periodEnd;
     DateTime fertileStart = fertileDates.first;
 
     if (daysSinceLastPeriod > averageCycle) {
-      // We're in a predicted cycle - calculate the period end for this predicted cycle
       final cyclesPassed = daysSinceLastPeriod ~/ averageCycle;
       final predictedCycleStart = lastPeriod.first.add(
         Duration(days: cyclesPassed * averageCycle),
@@ -415,16 +398,13 @@ class _CalendarDayCellState extends State<_CalendarDayCell> {
       final periodLength = stats['currentPeriodLength'] as int? ?? 5;
       periodEnd = predictedCycleStart.add(Duration(days: periodLength - 1));
 
-      // Recalculate fertile window for this predicted cycle
       final predictedNextPeriod =
           predictedCycleStart.add(Duration(days: averageCycle));
       fertileStart = predictedNextPeriod.subtract(const Duration(days: 14 + 5));
     } else {
-      // Still in last tracked cycle
       periodEnd = lastPeriodEnd;
     }
 
-    // Follicular phase is after period ends and before fertile window starts
     final dayAfterPeriod = periodEnd.add(const Duration(days: 1));
     final dayBeforeFertile = fertileStart.subtract(const Duration(days: 1));
 
@@ -514,7 +494,6 @@ class CalendarHeader extends StatelessWidget {
               horizontal: AppDimensions.cardPadding,
               vertical: AppDimensions.smallSpacing,
             ),
-            // No custom shadows - ClayCard handles light/dark mode automatically
             child: Text(
               DateFormat('MMMM y').format(currentMonth),
               style: theme.textTheme.titleMedium?.copyWith(

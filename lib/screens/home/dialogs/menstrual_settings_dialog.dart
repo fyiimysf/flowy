@@ -1,5 +1,3 @@
-// lib/screens/home/dialogs/menstrual_settings_dialog.dart
-
 import 'package:flutter/material.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/dimensions.dart';
@@ -48,7 +46,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Drag handle
             Container(
               width: 40,
               height: 4,
@@ -58,7 +55,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
               ),
             ),
             const SizedBox(height: AppDimensions.elementSpacing),
-            // Icon header
             Container(
               padding: const EdgeInsets.all(AppDimensions.elementSpacing),
               decoration: BoxDecoration(
@@ -72,7 +68,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
               ),
             ),
             const SizedBox(height: AppDimensions.elementSpacing),
-            // Title
             Text(
               context.tr('welcomeTitle'),
               style: theme.textTheme.titleLarge?.copyWith(
@@ -80,7 +75,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
               ),
             ),
             const SizedBox(height: AppDimensions.smallSpacing),
-            // Subtitle
             Text(
               context.tr('menstrualDaysQuestion'),
               textAlign: TextAlign.center,
@@ -89,7 +83,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
               ),
             ),
             const SizedBox(height: AppDimensions.sectionSpacing),
-            // Duration selector
             ClayCard(
               color: isDark
                   ? Colors.white.withOpacity(0.05)
@@ -115,7 +108,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                     ],
                   ),
                   const SizedBox(height: AppDimensions.elementSpacing),
-                  // Day selector buttons
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -133,7 +125,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
                               });
                             },
                             child: Container(
-                              // Removed AnimatedContainer to prevent theme switch flash
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
@@ -192,7 +183,6 @@ class _MenstrualSettingsDialogState extends State<MenstrualSettingsDialog> {
               ),
             ),
             const SizedBox(height: AppDimensions.sectionSpacing),
-            // Action buttons
             Row(
               children: [
                 Expanded(

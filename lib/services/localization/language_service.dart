@@ -1,17 +1,15 @@
-// lib/services/localization/language_service.dart
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageService extends ChangeNotifier {
   static const String _languageKey = 'app_language';
   static final LanguageService _instance = LanguageService._internal();
-  
+
   factory LanguageService() => _instance;
   LanguageService._internal();
 
   Locale _currentLocale = const Locale('en');
-  
+
   Locale get currentLocale => _currentLocale;
 
   final Map<String, Map<String, String>> _languages = {

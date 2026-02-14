@@ -1,5 +1,3 @@
-// lib/widgets/common/phase_widgets.dart
-
 import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../models/cycle_models.dart';
@@ -9,7 +7,6 @@ import '../../utils/constants/dimensions.dart';
 import 'cards.dart';
 import 'indicators.dart';
 
-/// Phase card with claymorphism styling
 class PhaseCard extends StatelessWidget {
   final PhaseDetail phase;
   final bool isCurrent;
@@ -32,9 +29,8 @@ class PhaseCard extends StatelessWidget {
       padding:
           const EdgeInsets.symmetric(horizontal: AppDimensions.elementSpacing),
       shadows: isDark || !isCurrent
-          ? [] // No shadows in dark mode
+          ? []
           : [
-              // Only light mode + current gets shadows
               BoxShadow(
                 color: color.withOpacity(0.25),
                 blurRadius: 4,
@@ -66,7 +62,6 @@ class PhaseCard extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            // const SizedBox(height: AppDimensions.tinySpacing),
             Text(
               '${phase.duration} days',
               style: theme.textTheme.bodySmall?.copyWith(
@@ -80,7 +75,6 @@ class PhaseCard extends StatelessWidget {
   }
 }
 
-/// Phase expansion tile with feminine design
 class PhaseExpansionTile extends StatelessWidget {
   final PhaseDetail phase;
 
@@ -152,7 +146,6 @@ class PhaseExpansionTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Progress bar
                   Container(
                     padding: const EdgeInsets.all(AppDimensions.smallSpacing),
                     decoration: BoxDecoration(
@@ -194,7 +187,6 @@ class PhaseExpansionTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: AppDimensions.elementSpacing),
-                  // Description
                   Container(
                     padding: const EdgeInsets.all(AppDimensions.elementSpacing),
                     decoration: BoxDecoration(
@@ -254,7 +246,6 @@ class PhaseExpansionTile extends StatelessWidget {
   }
 }
 
-/// Phase row with feminine styling
 class PhaseRow extends StatelessWidget {
   final PhaseDetail phase;
 
@@ -274,7 +265,7 @@ class PhaseRow extends StatelessWidget {
       radius: AppDimensions.radiusMedium,
       padding: const EdgeInsets.all(AppDimensions.elementSpacing),
       shadows: isDark
-          ? [] // No shadows in dark mode
+          ? []
           : [
               BoxShadow(
                 color: AppColors.shadow.withOpacity(0.05),
@@ -284,7 +275,6 @@ class PhaseRow extends StatelessWidget {
             ],
       child: Row(
         children: [
-          // Phase indicator bar
           Container(
             width: 5,
             height: 45,
@@ -301,7 +291,6 @@ class PhaseRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppDimensions.elementSpacing),
-          // Phase icon
           Container(
             padding: const EdgeInsets.all(AppDimensions.smallSpacing),
             decoration: BoxDecoration(
@@ -315,7 +304,6 @@ class PhaseRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppDimensions.elementSpacing),
-          // Phase info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,7 +324,6 @@ class PhaseRow extends StatelessWidget {
               ],
             ),
           ),
-          // Duration chip
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: AppDimensions.elementSpacing,

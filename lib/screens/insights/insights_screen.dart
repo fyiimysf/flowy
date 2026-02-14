@@ -1,5 +1,3 @@
-// lib/screens/insights/insights_screen.dart
-
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import '../../services/cycle/cycle_calculation_service.dart';
 import '../../services/cycle/phase_service.dart';
@@ -20,7 +18,6 @@ class InsightsScreen extends StatelessWidget {
     required this.stats,
   });
 
-  /// Gets the correct prediction date for the current or predicted cycle
   DateTime? _getCurrentPrediction(Map<String, dynamic> stats) {
     final originalPrediction = stats['prediction'] as DateTime?;
     if (originalPrediction == null) return null;
@@ -32,15 +29,12 @@ class InsightsScreen extends StatelessWidget {
     final averageCycle = stats['average'] as int? ?? 28;
     final now = DateTime.now();
 
-    // Check if we're past the expected cycle length
     final daysSinceLastPeriod = now.difference(lastPeriodStart).inDays;
 
     if (daysSinceLastPeriod <= averageCycle) {
-      // Still in the last tracked cycle, use original prediction
       return originalPrediction;
     }
 
-    // We're in a predicted cycle, calculate the next period date
     final cyclesPassed = (daysSinceLastPeriod / averageCycle).ceil();
     return lastPeriodStart.add(Duration(days: cyclesPassed * averageCycle));
   }
@@ -66,7 +60,6 @@ class InsightsScreen extends StatelessWidget {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          // Custom app bar
           SliverAppBar(
             expandedHeight: 80,
             floating: false,
@@ -93,17 +86,13 @@ class InsightsScreen extends StatelessWidget {
                 horizontal: AppDimensions.screenPadding),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                // Progress card
                 _buildProgressCard(cycleProgress, currentPhase, phaseColor,
                     stats, context, currentCycleDay, daysUntil),
                 const SizedBox(height: AppDimensions.smallSpacing),
-                // Statistics
                 StatisticsGrid(stats: stats),
                 const SizedBox(height: AppDimensions.smallSpacing),
-                // Phase breakdown
                 PhaseBreakdown(stats: stats),
                 const SizedBox(height: AppDimensions.sectionSpacing),
-                // Fertility forecast
                 if (prediction != null)
                   FertilityForecast(prediction: prediction),
                 const SizedBox(height: AppDimensions.sectionSpacing),
@@ -136,7 +125,6 @@ class InsightsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (!isNarrow) ...[
-                    // Horizontal layout for wider screens
                     ProgressIndicator(
                       value: progress,
                       size: 80,
@@ -153,42 +141,6 @@ class InsightsScreen extends StatelessWidget {
                           : CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Container(
-                        //   padding: const EdgeInsets.symmetric(
-                        //     horizontal: AppDimensions.elementSpacing,
-                        //     vertical: AppDimensions.smallSpacing,
-                        //   ),
-                        //   decoration: BoxDecoration(
-                        //     color: phaseColor.withOpacity(0.1),
-                        //     borderRadius: BorderRadius.circular(
-                        //         AppDimensions.radiusCircular),
-                        //   ),
-                        //   child: Row(
-                        //     mainAxisSize: MainAxisSize.min,
-                        //     children: [
-                        //       Icon(
-                        //         PhaseService.getPhaseIcon(
-                        //           PhaseService.getPhaseName(
-                        //               DateTime.now(), stats),
-                        //         ),
-                        //         color: phaseColor,
-                        //         size: AppDimensions.iconSmall,
-                        //       ),
-                        //       const SizedBox(width: AppDimensions.smallSpacing),
-                        //       Flexible(
-                        //         child: Text(
-                        //           'Current Phase',
-                        //           style: TextStyle(
-                        //             color: phaseColor,
-                        //             fontWeight: FontWeight.w700,
-                        //             fontSize: AppDimensions.fontSmall,
-                        //           ),
-                        //           overflow: TextOverflow.ellipsis,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         const SizedBox(height: AppDimensions.smallSpacing),
                         Text(
                           currentPhase,
@@ -235,18 +187,14 @@ class InsightsScreen extends StatelessWidget {
                 alignment: AlignmentGeometry.centerRight,
                 children: [
                   if (isNarrow) ...[
-                    // Vertical layout for narrow screens
                     LinearProgressIndicator(
                       value: progress,
-                      // size: 100,
-                      // strokeWidth: 10,
                       year2023: false,
                       color: phaseColor,
                       minHeight: 30,
                       borderRadius: BorderRadiusDirectional.circular(4),
                       backgroundColor: phaseColor.withAlpha(60),
                       stopIndicatorColor: phaseColor.withAlpha(255),
-                      // label: 'Cycle',
                     ),
                   ],
                 ],

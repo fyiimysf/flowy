@@ -1,5 +1,3 @@
-// lib/screens/home/widgets/phase_timeline.dart
-
 import 'package:floi/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import '../../../models/cycle_models.dart';
@@ -23,15 +21,12 @@ class PhaseTimeline extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // Calculate phases based on actual stats including ovulation date
     final phases = PhaseService.calculatePhaseDetails(currentCycle, stats);
 
     return ClayCard(
       padding: const EdgeInsets.all(AppDimensions.cardPadding),
-      // No custom shadows - ClayCard handles light/dark mode automatically
       child: Column(
         children: [
-          // Header with icon
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -64,7 +59,6 @@ class PhaseTimeline extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppDimensions.sectionSpacing),
-          // Phase list
           ...phases.map((phase) {
             return Padding(
               padding:

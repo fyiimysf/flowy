@@ -1,5 +1,3 @@
-// lib/models/enums.dart
-
 enum CyclePhase {
   menstrual('Menstrual', '🌑'),
   follicular('Follicular', '🌱'),

@@ -1,10 +1,7 @@
-// lib/widgets/common/indicators.dart
-
 import 'package:flutter/material.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/dimensions.dart';
 
-/// Animated progress indicator with soft styling
 class ProgressIndicator extends StatelessWidget {
   final double value;
   final double size;
@@ -29,11 +26,10 @@ class ProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Outer soft shadow for depth (light mode only)
         if (!isDark)
           Container(
             width: size,
@@ -62,7 +58,8 @@ class ProgressIndicator extends StatelessWidget {
                 strokeWidth: strokeWidth,
                 strokeCap: StrokeCap.round,
                 color: color ?? AppColors.primary,
-                backgroundColor: backgroundColor ?? theme.colorScheme.onSurface.withOpacity(0.1),
+                backgroundColor: backgroundColor ??
+                    theme.colorScheme.onSurface.withOpacity(0.1),
               );
             },
           ),
@@ -93,7 +90,6 @@ class ProgressIndicator extends StatelessWidget {
   }
 }
 
-/// Fertility indicator with soft dot and label
 class FertilityIndicator extends StatelessWidget {
   final String label;
   final Color color;
@@ -112,7 +108,7 @@ class FertilityIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -153,7 +149,6 @@ class FertilityIndicator extends StatelessWidget {
   }
 }
 
-/// Phase chip with claymorphism styling
 class PhaseChip extends StatelessWidget {
   final String label;
   final Color color;
@@ -172,16 +167,15 @@ class PhaseChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Container(
-      // Removed AnimatedContainer to prevent theme switch flash
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.elementSpacing,
         vertical: AppDimensions.smallSpacing,
       ),
       decoration: BoxDecoration(
-        color: isActive 
-            ? color.withOpacity(0.15) 
+        color: isActive
+            ? color.withOpacity(0.15)
             : isDark
                 ? Colors.white.withOpacity(0.05)
                 : theme.colorScheme.surfaceContainerHighest,
@@ -207,14 +201,18 @@ class PhaseChip extends StatelessWidget {
             Icon(
               icon,
               size: AppDimensions.iconSmall,
-              color: isActive ? color : theme.colorScheme.onSurface.withOpacity(0.5),
+              color: isActive
+                  ? color
+                  : theme.colorScheme.onSurface.withOpacity(0.5),
             ),
             const SizedBox(width: AppDimensions.tinySpacing),
           ],
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: isActive ? color : theme.colorScheme.onSurface.withOpacity(0.6),
+              color: isActive
+                  ? color
+                  : theme.colorScheme.onSurface.withOpacity(0.6),
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
             ),
           ),
@@ -224,7 +222,6 @@ class PhaseChip extends StatelessWidget {
   }
 }
 
-/// Status dot with pulse animation
 class StatusDot extends StatefulWidget {
   final Color color;
   final double size;
@@ -241,7 +238,8 @@ class StatusDot extends StatefulWidget {
   State<StatusDot> createState() => _StatusDotState();
 }
 
-class _StatusDotState extends State<StatusDot> with SingleTickerProviderStateMixin {
+class _StatusDotState extends State<StatusDot>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -252,11 +250,11 @@ class _StatusDotState extends State<StatusDot> with SingleTickerProviderStateMix
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _animation = Tween<double>(begin: 1.0, end: 1.5).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
-    
+
     if (widget.pulse) {
       _controller.repeat(reverse: true);
     }
@@ -271,7 +269,7 @@ class _StatusDotState extends State<StatusDot> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
@@ -286,8 +284,12 @@ class _StatusDotState extends State<StatusDot> with SingleTickerProviderStateMix
                 : [
                     BoxShadow(
                       color: widget.color.withOpacity(0.4),
-                      blurRadius: widget.pulse ? widget.size * (_animation.value - 0.5) : 6,
-                      spreadRadius: widget.pulse ? widget.size * (_animation.value - 1.0) * 0.3 : 0,
+                      blurRadius: widget.pulse
+                          ? widget.size * (_animation.value - 0.5)
+                          : 6,
+                      spreadRadius: widget.pulse
+                          ? widget.size * (_animation.value - 1.0) * 0.3
+                          : 0,
                     ),
                   ],
           ),
@@ -297,7 +299,6 @@ class _StatusDotState extends State<StatusDot> with SingleTickerProviderStateMix
   }
 }
 
-/// Cycle progress bar with segments
 class CycleProgressBar extends StatelessWidget {
   final double progress;
   final List<Color> phaseColors;
@@ -314,7 +315,7 @@ class CycleProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Container(
       height: height,
       decoration: BoxDecoration(
@@ -325,7 +326,6 @@ class CycleProgressBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(height / 2),
         child: Stack(
           children: [
-            // Background segments
             Row(
               children: phaseColors.map((color) {
                 return Expanded(
@@ -335,7 +335,6 @@ class CycleProgressBar extends StatelessWidget {
                 );
               }).toList(),
             ),
-            // Progress indicator
             FractionallySizedBox(
               widthFactor: progress,
               child: Container(
